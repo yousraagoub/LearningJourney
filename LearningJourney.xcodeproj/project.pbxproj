@@ -45,6 +45,21 @@
 			path = LearningJourneyUITests;
 			sourceTree = "<group>";
 		};
+		91D34C4F2EA77D510057B4EC /* View */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = View;
+			sourceTree = "<group>";
+		};
+		91D34C502EA77D5E0057B4EC /* Model */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		91D34C522EA77D840057B4EC /* ViewModel */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +90,9 @@
 		9163E9DB2EA777BD00910248 = {
 			isa = PBXGroup;
 			children = (
+				91D34C522EA77D840057B4EC /* ViewModel */,
+				91D34C502EA77D5E0057B4EC /* Model */,
+				91D34C4F2EA77D510057B4EC /* View */,
 				9163E9E62EA777BD00910248 /* LearningJourney */,
 				9163E9F42EA777BE00910248 /* LearningJourneyTests */,
 				9163E9FE2EA777BE00910248 /* LearningJourneyUITests */,
@@ -109,6 +127,9 @@
 			);
 			fileSystemSynchronizedGroups = (
 				9163E9E62EA777BD00910248 /* LearningJourney */,
+				91D34C4F2EA77D510057B4EC /* View */,
+				91D34C502EA77D5E0057B4EC /* Model */,
+				91D34C522EA77D840057B4EC /* ViewModel */,
 			);
 			name = LearningJourney;
 			packageProductDependencies = (
