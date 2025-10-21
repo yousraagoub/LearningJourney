@@ -13,7 +13,7 @@ struct OnboardingView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color(.flameOranage))
                 .frame(width: 109, height: 109)
-                .glassEffect(.regular.tint(.flameOranage.opacity(0.02)))
+                .glassEffect(.regular.tint(.onboardingLogoBG))
             VStack(alignment: .leading){
                 Text("Hello Learner")
                     .font(.system(size: 34))
@@ -36,21 +36,21 @@ struct OnboardingView: View {
                     Text("Week")
                         .font(.system(size: 17))
                         .frame(width: 97, height: 48)
-                        .glassEffect()
+                        .glassEffect(.regular.interactive())
                         .onTapGesture {
                            //Action here
                         }
                     Text("Month")
                         .font(.system(size: 17))
                         .frame(width: 97, height: 48)
-                        .glassEffect()
+                        .glassEffect(.regular.interactive())
                         .onTapGesture {
                            //Action here
                         }
                     Text("Year")
                         .font(.system(size: 17))
                         .frame(width: 97, height: 48)
-                        .glassEffect()
+                        .glassEffect(.regular.interactive())
                         .onTapGesture {
                            //Action here
                         }
@@ -60,8 +60,9 @@ struct OnboardingView: View {
             Spacer()
             Text("Start learning")
                 .font(.system(size: 17))
+                .foregroundColor(Color(.white))
                 .frame(width: 182, height: 48)
-                .glassEffect(.regular.interactive().tint(.flameOranage.opacity(0.9)))
+                .glassEffect(.regular.interactive().tint(.primaryButton))
         }//VStack
         .padding()
     }//body
