@@ -33,36 +33,40 @@ struct OnboardingView: View {
                     .font(.system(size: 22))
                     .padding(.top, 20)
                 HStack{
-                    Text("Week")
-                        .font(.system(size: 17))
-                        .frame(width: 97, height: 48)
-                        .glassEffect(.regular.interactive())
-                        .onTapGesture {
-                           //Action here
+                    Group{
+                        Button{
+                            
+                        }label: {
+                            Text("Week")
                         }
-                    Text("Month")
-                        .font(.system(size: 17))
-                        .frame(width: 97, height: 48)
-                        .glassEffect(.regular.interactive())
-                        .onTapGesture {
-                           //Action here
+                        Button{
+                            
+                        }label: {
+                            Text("Month")
                         }
-                    Text("Year")
-                        .font(.system(size: 17))
-                        .frame(width: 97, height: 48)
-                        .glassEffect(.regular.interactive())
-                        .onTapGesture {
-                           //Action here
+                        Button{
+                            
+                        }label: {
+                            Text("Year")
                         }
+                    }//Group - For Buttons Styling
+                    .buttonStyle(.plain)
+                    .font(.system(size: 17))
+                    .frame(width: 97, height: 48)
+                    .glassEffect(.regular.interactive())
                 }//HStack - For Buttons
+            Spacer()
             }//VStack - For Text Alignment
             .padding(.top, 40)
-            Spacer()
-            Text("Start learning")
-                .font(.system(size: 17))
-                .foregroundColor(Color(.white))
-                .frame(width: 182, height: 48)
-                .glassEffect(.regular.interactive().tint(.primaryButton))
+            Button{
+            }label: {
+                Text("Start learning")
+            }
+            .buttonStyle(.plain)
+            .font(.system(size: 17))
+            .foregroundColor(Color(.white))
+            .frame(width: 182, height: 48)
+            .glassEffect(.regular.interactive().tint(.primaryButton))
         }//VStack
         .padding()
     }//body

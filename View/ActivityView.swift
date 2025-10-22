@@ -31,7 +31,7 @@ struct ActivityView: View {
                    
                
                VStack{
-                   MultiDatePicker("Label"/*@END_MENU_TOKEN@*/, selection: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Binding<Set<DateComponents>>@*/.constant([]))
+                   MultiDatePicker("Label", selection: .constant([]))
                        .frame(maxHeight: 78)
                        .tint(.blue) // 👈 change highlight color
                        .background(.thinMaterial)
@@ -87,26 +87,41 @@ struct ActivityView: View {
             }//ZStack - For Background Frame of Calendar and Counts
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)
-            ZStack{
-                Circle()
-                    .fill(Color.clear)
-                    .frame(width: 274, height: 274)
-                    .glassEffect(.clear.tint(.primaryButton))
+           .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.clear)
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(style: StrokeStyle(lineWidth: 1, dash: [10])))
+                
+           )
+            Button{
+                
+            } label: {
                 Text("Log as learned")
                     .font(.system(size: 36))
                     .foregroundStyle(Color.white)
                     .frame(width: 232, height: 100)
                     .bold()
-            }//ZStack - For Log Button
+            }
+            .buttonStyle(.plain)
+            .frame(width: 274, height: 274)
+            .glassEffect(.clear.interactive().tint(.primaryButton))
             Spacer()
-            Text("Log as freezed")
-                .font(.system(size: 17))
-                .foregroundColor(Color(.white))
-                .frame(width: 274, height: 48)
-                .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
-            Text("*1* out of *2* freezes used")
-                .font(.system(size: 14))
-                .foregroundColor(Color(.gray))
+            Button{
+            } label: {
+                Text("Log as freezed")
+            }
+            .buttonStyle(.plain)
+            .font(.system(size: 17))
+            .foregroundColor(Color(.white))
+            .frame(width: 274, height: 48)
+            .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
+            Button{
+            }label: {
+                Text("*1* out of *2* freezes used")
+            }
+            .buttonStyle(.plain)
+            .font(.system(size: 14))
+            .foregroundColor(Color(.gray))
 
         }//VStack
         .padding()
