@@ -13,24 +13,28 @@ struct ActivityView: View {
                     .font(.system(size: 34))
                     .bold()
                 Spacer()
-                Image(systemName: "calendar")
-                    .font(.system(size: 22))
-                    .frame(width: 44, height: 44)
-                    .glassEffect()
-                Image(systemName: "pencil.and.outline")
-                    .font(.system(size: 22))
-                    .frame(width: 44, height: 44)
-                    .glassEffect()
+                Group {
+                    Button{
+                    }label: {
+                        Image(systemName: "calendar")
+                    }
+                    Button{
+                    }label: {
+                        Image(systemName: "pencil.and.outline")
+                    }
+                }//Group - For Bar Buttons
+                .buttonStyle(.plain)
+                .font(.system(size: 22))
+                .frame(width: 44, height: 44)
+                .glassEffect(.regular.interactive().tint(.gray.opacity(0.1)))
                 
             }//HStack - For Title and Tool Bar
            ZStack {
-               RoundedRectangle(cornerRadius:50)
-                   .fill(Color.clear)
-                   .stroke(Color.white, lineWidth: 5)
+               RoundedRectangle(cornerRadius:13, style: .continuous)
+                   .fill(Color.gray.opacity(0.25))
+                   .stroke(Color.gray, lineWidth: 0.5)
                    .opacity(0.5)
-                   
-               
-               VStack{
+               VStack(alignment: .leading){
                    MultiDatePicker("Label", selection: .constant([]))
                        .frame(maxHeight: 78)
                        .tint(.blue) // 👈 change highlight color
@@ -38,6 +42,7 @@ struct ActivityView: View {
                        .clipShape(RoundedRectangle(cornerRadius: 16))
                        .padding(.horizontal)
                    Divider()
+                       .padding(.trailing, 10)
                    Text("Learning *Placeholder*")
                        .font(.system(size: 16))
                        .bold()
@@ -84,15 +89,10 @@ struct ActivityView: View {
                        }//ZStack - For Freeze Overlaping
                    }//HStack - For Streak and Freeze Count
                }//VStack - For Calendar, Text, and Counts
+               .padding(.leading)
             }//ZStack - For Background Frame of Calendar and Counts
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)
-           .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.clear)
-                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(style: StrokeStyle(lineWidth: 1, dash: [10])))
-                
-           )
             Button{
                 
             } label: {
