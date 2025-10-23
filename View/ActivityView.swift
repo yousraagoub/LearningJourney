@@ -6,6 +6,7 @@
 //
 import SwiftUI
 struct ActivityView: View {
+    @StateObject var activityVM = ActivityViewModel()
     var body: some View {
         VStack{
             HStack{
@@ -57,7 +58,7 @@ struct ActivityView: View {
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.flameOranage)
                                VStack (alignment: .leading){
-                                   Text("*100*")
+                                   Text("\(activityVM.showStreak())")
                                        .font(.system(size: 24))
                                        .bold()
                                        .foregroundStyle(Color.white)
@@ -94,7 +95,7 @@ struct ActivityView: View {
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)
             Button{
-                
+                activityVM.LogAsLearned()
             } label: {
                 Text("Log as learned")
                     .font(.system(size: 36))
