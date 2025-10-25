@@ -16,7 +16,9 @@ struct OnboardingView: View {
                     .font(.system(size: 36))
                     .foregroundStyle(Color(.flameOranage))
                     .frame(width: 109, height: 109)
-                    .glassEffect(.regular.tint(.onboardingLogoBG))
+                    .glassEffect(.clear)
+                    .background(.onboardingLogoBG)
+                    .cornerRadius(100)
                 VStack(alignment: .leading){
                     Text("Hello Learner")
                         .font(.system(size: 34))
@@ -63,8 +65,10 @@ struct OnboardingView: View {
                 .font(.system(size: 17))
                 .foregroundColor(Color(.white))
                 .frame(width: 182, height: 48)
-                .glassEffect(.clear.interactive().tint(.primaryButton))
-               
+                .glassEffect(.clear.interactive())
+                .background(.primaryButton)
+                .cornerRadius(30)
+             
                 NavigationLink(
                     destination: ActivityView(),
                     isActive: $onboardingVM.shouldNavigate
