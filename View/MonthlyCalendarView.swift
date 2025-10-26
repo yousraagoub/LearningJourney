@@ -1,0 +1,48 @@
+//
+//  MonthlyCalendarView.swift
+//  LearningJourney
+//
+//  Created by Yousra Abdelrahman on 04/05/1447 AH.
+//
+import SwiftUI
+
+struct MonthlyCalendarView: View {
+    @ObservedObject var viewModel: CalendarViewModel
+    
+    let columns = Array(repeating: GridItem(.flexible()), count: 7)
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(viewModel.selectedMonth, style: .date)
+                    .font(.title)
+                    .bold()
+                Spacer()
+                Button(action: { viewModel.goToPreviousMonth() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color.flameOranage)
+                }
+                Button(action: { viewModel.goToNextMonth() }) {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(Color.flameOranage)
+                }
+            }
+            .padding()
+            
+            LazyVGrid(columns: columns) {
+                ForEach(viewModel.weekDays, id: \.self) { day in
+                    Text(day)
+                }
+                
+                ForEach(viewModel.daysInMonth) { day in
+                    Text("\(Calendar.current.component(.day, from: day.date))")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(8)
+                        .background(day.isCurrent ? Color.flameOranage : (day.isLogged ? Color.streakBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
+                        .clipShape(Circle())
+                        .foregroundColor(day.isCurrent || day.isLogged || day.isFreezed ? .white : .white)
+                }
+            }
+        }
+    }
+}

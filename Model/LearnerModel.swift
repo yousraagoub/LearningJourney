@@ -15,6 +15,8 @@ struct LearnerModel: Identifiable{ //Codable is for later...
     var streak: Int = 0
     var freezeCount: Int = 0
     var freezeLimit: Int = 0
+    var loggedDates: [Date] = []  // days marked as learned
+    var freezedDates: [Date] = [] // days marked as frozen
     var endDate: Date {
         let calendar = Calendar.current
         switch duration {

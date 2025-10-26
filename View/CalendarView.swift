@@ -8,24 +8,28 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var selectedDates: Set<DateComponents> = []
-    private let currentMonth = DateFormatter().monthSymbols[Calendar.current.component(.month, from: Date()) - 1]
-    private let currentYear = Calendar.current.component(.year, from: Date())
-
+    @StateObject var activityVM: ActivityViewModel
+    //🟥
+    init(learnerM: LearnerModel) {
+           _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
+       }
     var body: some View {
-        VStack {
-            Text("\(currentMonth) \(currentYear)")
-                .font(.title2)
-                .bold()
-
-            MultiDatePicker("Select Dates", selection: $selectedDates)
-                .frame(maxHeight: 320) // limits to roughly one month view
-        }
-        .padding()
+        let viewModel = CalendarViewModel(learner: activityVM.learnerM)
+        MonthlyCalendarView(viewModel: viewModel)
+            .previewLayout(.sizeThatFits)
+            .padding()
     }
+    
 }
 
 
 #Preview {
-    CalendarView()
+    CalendarView(learnerM: LearnerModel(
+        subject: "Swift",
+        duration: .month,
+        startDate: Date(),
+        streak: 3,
+        freezeCount: 1,
+        freezeLimit: 8
+    ))
 }

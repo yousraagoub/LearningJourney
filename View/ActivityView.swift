@@ -11,12 +11,6 @@ struct ActivityView: View {
     init(learnerM: LearnerModel) {
            _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
        }
-    //🟥
-    var currentMonthString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        return formatter.string(from: Date())
-    }
     
     var body: some View {
         VStack{
@@ -27,6 +21,7 @@ struct ActivityView: View {
                 Spacer()
                 Group {
                     Button{
+                        
                     }label: {
                         Image(systemName: "calendar")
                     }
@@ -47,19 +42,13 @@ struct ActivityView: View {
                    .stroke(Color.gray, lineWidth: 0.5)
                    .opacity(0.5)
                VStack(alignment: .leading){
-                   //🟥
-                   Text(currentMonthString)
-                           .font(.title3)
-                           .bold()
-                           .padding(.leading)
-                   MultiDatePicker("Label", selection: .constant([]))
-                       .frame(maxHeight: 78)
-                       .tint(.blue) // 👈 change highlight color
-                       .background(.thinMaterial)
-                       .clipShape(RoundedRectangle(cornerRadius: 16))
-                       .padding(.horizontal)
-                   
+                   //📅
+                   let viewModel = CalendarViewModel(learner: activityVM.learnerM)
+                   WeeklyCalendarView(viewModel: viewModel)
+                       .previewLayout(.sizeThatFits)
+                       .padding(.trailing, 10)
                    Divider()
+                       .padding(.bottom, 12)
                        .padding(.trailing, 10)
                    Text("Learning \(activityVM.learnerM.subject)")
                        .font(.system(size: 16))
@@ -74,7 +63,7 @@ struct ActivityView: View {
                                Image(systemName: "flame.fill")
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.flameOranage)
-                                StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak", color: .blue)
+                                StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
                            }//HStack - For Flame, Count, and Text
                        }//ZStack - For Streak Overlaping
                        ZStack{
@@ -86,12 +75,15 @@ struct ActivityView: View {
                                Image(systemName: "cube.fill")
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.cubeBlue)
-                               StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen", color: .teal)
+                               StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
                            }//HStack - For Cube, Count, and Text
                        }//ZStack - For Freeze Overlaping
                    }//HStack - For Streak and Freeze Count
                }//VStack - For Calendar, Text, and Counts
-               .padding(.leading)
+               .padding(.leading, 16)
+               .padding(.trailing, 16)
+               .padding(.top, 12)
+               .padding(.bottom, 12)
             }//ZStack - For Background Frame of Calendar and Counts
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)

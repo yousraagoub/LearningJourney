@@ -10,7 +10,6 @@ struct StreakFreezeView: View {
     var count: Int
     var singular: String
     var plural: String
-    var color: Color
 
     var body: some View {
         VStack (alignment: .leading) {
