@@ -8,6 +8,7 @@ import SwiftUI
 
 struct WeeklyCalendarView: View {
     @ObservedObject var viewModel: CalendarViewModel
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -36,9 +37,12 @@ struct WeeklyCalendarView: View {
                         .frame(maxWidth: .infinity)
                         .font(.system(size: 20, weight: .bold))
                         .padding(5)
-                        .background(day.isCurrent ? Color.flameOranage : (day.isLogged ? Color.onboardingLogoBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
+                        .background(day.isCurrent ? Color.currentDayCalendar : (day.isLogged ? Color.onboardingLogoBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
                         .clipShape(Circle())
-                        .foregroundColor(day.isCurrent || day.isLogged || day.isFreezed ? .white : .white)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                        .foregroundColor(day.isCurrent ? .white : .white)
+                        .foregroundColor(day.isLogged ? .flameOranage : .white)
+                        .foregroundColor(day.isFreezed ? .cubeBlue : .white)
                     
                 }
             }//HStack

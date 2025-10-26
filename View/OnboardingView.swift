@@ -80,6 +80,7 @@ struct OnboardingView: View {
         
     }//body
 }//struct
+
 #Preview {
     OnboardingView()
 }

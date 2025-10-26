@@ -76,6 +76,7 @@ struct ActivityView: View {
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.cubeBlue)
                                StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
+                    
                            }//HStack - For Cube, Count, and Text
                        }//ZStack - For Freeze Overlaping
                    }//HStack - For Streak and Freeze Count
