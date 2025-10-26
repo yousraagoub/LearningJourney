@@ -7,47 +7,136 @@
 import SwiftUI
 
 struct WeeklyCalendarView: View {
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarVM: CalendarViewModel
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
+            // MARK: - Header: Month + Year with Arrow
             HStack {
-                Text(viewModel.selectedMonth, style: .date)
-                    .font(.system(size: 16, weight: .bold))
-                    
+                Button {
+                    withAnimation(.easeInOut) {
+                        calendarVM.showMonthPicker.toggle()
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Text(calendarVM.selectedMonth.formatted(.dateTime.month().year()))
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.primary)
+                        
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .medium))
+                            .rotationEffect(.degrees(calendarVM.showMonthPicker ? 180 : 0))
+                            .foregroundColor(.flameOranage)
+                    }
+                }
+                .buttonStyle(.plain)
+                
                 Spacer()
-                Button(action: { viewModel.goToPreviousWeek()}) { Image(systemName: "chevron.left").foregroundStyle(Color.flameOranage) }
-                Button(action: { viewModel.goToNextWeek() }) { Image(systemName: "chevron.right").foregroundStyle(Color.flameOranage) }
-            }//HStack
-            .padding(.bottom, 12)
-            
-            HStack {
-                ForEach(viewModel.weekDays, id: \.self) { day in
-                    Text(day)
-                        .frame(maxWidth: .infinity)
-                        .font(.system(size: 13))
-                        .foregroundColor(Color.gray)
+                
+                // Week navigation
+                HStack(spacing: 16) {
+                    Button(action: { calendarVM.goToPreviousWeek() }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.flameOranage)
+                    }
+                    Button(action: { calendarVM.goToNextWeek() }) {
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(Color.flameOranage)
+                    }
                 }
-            }//HStack
+            }
+            .padding(.horizontal)
             
-            HStack {
-                ForEach(viewModel.daysInWeek) { day in
-                    Text("\(Calendar.current.component(.day, from: day.date))")
-                        .frame(maxWidth: .infinity)
-                        .font(.system(size: 20, weight: .bold))
-                        .padding(5)
-                        .background(day.isCurrent ? Color.currentDayCalendar : (day.isLogged ? Color.onboardingLogoBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
-                        .clipShape(Circle())
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                        .foregroundColor(day.isCurrent ? .white : .white)
-                        .foregroundColor(day.isLogged ? .flameOranage : .white)
-                        .foregroundColor(day.isFreezed ? .cubeBlue : .white)
+            // MARK: - Inline Month Picker
+            if calendarVM.showMonthPicker {
+                DatePicker(
+                    "",
+                    selection: $calendarVM.selectedMonth,
+                    displayedComponents: [.date]
+                )
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .frame(maxHeight: 189)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+                .onChange(of: calendarVM.selectedMonth) { _ in
+                    calendarVM.generateWeekDays()
+                }
+            }
+            
+            // MARK: - Hidden Content When Month Picker Expanded
+            if !calendarVM.showMonthPicker {
+                VStack {
+                    // Weekday Titles
+                    HStack {
+                        ForEach(calendarVM.weekDays, id: \.self) { day in
+                            Text(day)
+                                .frame(maxWidth: .infinity)
+                                .font(.system(size: 13))
+                                .foregroundColor(.gray)
+                        }
+                    }
+
+                    // Week Days
+                    HStack {
+                        ForEach(calendarVM.daysInWeek) { day in
+                            Text("\(Calendar.current.component(.day, from: day.date))")
+                                .frame(maxWidth: .infinity)
+                                .font(.system(size: 16, weight: .bold))
+                                .padding(6)
+                                .background(backgroundColor(for: day))
+                                .clipShape(Circle())
+                                .foregroundColor(.white)
+                        }
+                    }
+                    Divider()
+                        .padding(.bottom, 12)
+                    //Added by me
+                    Text("Learning \(calendarVM.learnerM.subject)")
+                        .font(.system(size: 16))
+                        .bold()
+                    HStack {
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 100)
+                                .fill(Color.clear)
+                                .frame(width: 160, height: 69)
+                                .glassEffect(.clear.tint(.streakBG))
+                            HStack{
+                                Image(systemName: "flame.fill")
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(Color.flameOranage)
+                                 StreakFreezeView(count: calendarVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
+                            }//HStack - For Flame, Count, and Text
+                        }//ZStack - For Streak Overlaping
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 100)
+                                .fill(Color.clear)
+                                .frame(width: 160, height: 69)
+                                .glassEffect(.clear.tint(.freezeBG))
+                            HStack{
+                                Image(systemName: "cube.fill")
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(Color.cubeBlue)
+                                StreakFreezeView(count: calendarVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
+                     
+                            }//HStack - For Cube, Count, and Text
+                        }//ZStack - For Freeze Overlaping
+                    }//HStack - For Streak and Freeze Count
                     
                 }
-            }//HStack
-        }//VStack
-    }//body
-}//struct
+                .padding(.horizontal)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .animation(.easeInOut, value: calendarVM.showMonthPicker)
+    }
 
-
+    
+    // MARK: - Helper
+    private func backgroundColor(for day: Day) -> Color {
+        if day.isCurrent { return .currentDayCalendar }
+        if day.isLogged { return .onboardingLogoBG }
+        if day.isFreezed { return .freezeBG }
+        return .clear
+    }
+}

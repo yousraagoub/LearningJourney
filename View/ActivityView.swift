@@ -37,49 +37,9 @@ struct ActivityView: View {
                 
             }//HStack - For Title and Tool Bar
            ZStack {
-               RoundedRectangle(cornerRadius:13, style: .continuous)
-                   .fill(Color.gray.opacity(0.25))
-                   .stroke(Color.gray, lineWidth: 0.5)
-                   .opacity(0.5)
                VStack(alignment: .leading){
                    //📅
-                   let viewModel = CalendarViewModel(learner: activityVM.learnerM)
-                   WeeklyCalendarView(viewModel: viewModel)
-                       .previewLayout(.sizeThatFits)
-                       .padding(.trailing, 10)
-                   Divider()
-                       .padding(.bottom, 12)
-                       .padding(.trailing, 10)
-                   Text("Learning \(activityVM.learnerM.subject)")
-                       .font(.system(size: 16))
-                       .bold()
-                   HStack {
-                       ZStack{
-                           RoundedRectangle(cornerRadius: 100)
-                               .fill(Color.clear)
-                               .frame(width: 160, height: 69)
-                               .glassEffect(.clear.tint(.streakBG))
-                           HStack{
-                               Image(systemName: "flame.fill")
-                                   .font(.system(size: 15))
-                                   .foregroundStyle(Color.flameOranage)
-                                StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
-                           }//HStack - For Flame, Count, and Text
-                       }//ZStack - For Streak Overlaping
-                       ZStack{
-                           RoundedRectangle(cornerRadius: 100)
-                               .fill(Color.clear)
-                               .frame(width: 160, height: 69)
-                               .glassEffect(.clear.tint(.freezeBG))
-                           HStack{
-                               Image(systemName: "cube.fill")
-                                   .font(.system(size: 15))
-                                   .foregroundStyle(Color.cubeBlue)
-                               StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
-                    
-                           }//HStack - For Cube, Count, and Text
-                       }//ZStack - For Freeze Overlaping
-                   }//HStack - For Streak and Freeze Count
+                   DatePickerCompactView(learnerM: activityVM.learnerM)
                }//VStack - For Calendar, Text, and Counts
                .padding(.leading, 16)
                .padding(.trailing, 16)

@@ -14,7 +14,7 @@ struct CalendarView: View {
            _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
        }
     var body: some View {
-        let viewModel = CalendarViewModel(learner: activityVM.learnerM)
+        let viewModel = CalendarViewModel(learnerM: activityVM.learnerM)
         MonthlyCalendarView(viewModel: viewModel)
             .previewLayout(.sizeThatFits)
             .padding()

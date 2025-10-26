@@ -13,7 +13,6 @@ internal import Combine
 @MainActor
 class ActivityViewModel: ObservableObject {
     @Published var learnerM = LearnerModel()
-//    @Published var streak: Int = 0
     //🟥
     @Published var lastLoggedDate: Date?
     @Published var isLogButtonDisabled = false

@@ -8,21 +8,22 @@ import Foundation
 internal import Combine
 
 class CalendarViewModel: ObservableObject {
-    @Published var currentDate: Date = Date()        // current date shown
-    @Published var selectedMonth: Date = Date()      // for month picker
+    @Published var currentDate: Date = Date()
+    @Published var selectedMonth: Date = Date()
+    @Published var showMonthPicker: Bool = false
+
     @Published var weekDays: [String] = ["SUN","MON","TUE","WED","THU","FRI","SAT"]
+    @Published var daysInWeek: [Day] = []
+    @Published var daysInMonth: [Day] = []
+
+    var learnerM: LearnerModel
     
-    @Published var daysInWeek: [Day] = []           // weekly view
-    @Published var daysInMonth: [Day] = []          // monthly overview
-    
-    var learner: LearnerModel
-    
-    init(learner: LearnerModel) {
-        self.learner = learner
+    init(learnerM: LearnerModel) {
+        self.learnerM = learnerM
         generateWeekDays()
         generateMonthDays()
     }
-    
+
     func generateWeekDays() {
         let calendar = Calendar.current
         guard let weekStart = calendar.dateInterval(of: .weekOfMonth, for: currentDate)?.start else { return }
@@ -31,14 +32,14 @@ class CalendarViewModel: ObservableObject {
                 return Day(
                     date: date,
                     isCurrent: calendar.isDateInToday(date),
-                    isLogged: learner.loggedDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }),
-                    isFreezed: learner.freezedDates.contains(where: { calendar.isDate($0, inSameDayAs: date) })
+                    isLogged: learnerM.loggedDates.contains { calendar.isDate($0, inSameDayAs: date) },
+                    isFreezed: learnerM.freezedDates.contains { calendar.isDate($0, inSameDayAs: date) }
                 )
             }
             return nil
         }
     }
-    
+
     func generateMonthDays() {
         let calendar = Calendar.current
         guard let monthInterval = calendar.dateInterval(of: .month, for: selectedMonth) else { return }
@@ -47,8 +48,8 @@ class CalendarViewModel: ObservableObject {
                 return Day(
                     date: date,
                     isCurrent: calendar.isDateInToday(date),
-                    isLogged: learner.loggedDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }),
-                    isFreezed: learner.freezedDates.contains(where: { calendar.isDate($0, inSameDayAs: date) })
+                    isLogged: learnerM.loggedDates.contains { calendar.isDate($0, inSameDayAs: date) },
+                    isFreezed: learnerM.freezedDates.contains { calendar.isDate($0, inSameDayAs: date) }
                 )
             }
             return nil
@@ -64,7 +65,7 @@ class CalendarViewModel: ObservableObject {
         currentDate = Calendar.current.date(byAdding: .weekOfMonth, value: -1, to: currentDate) ?? currentDate
         generateWeekDays()
     }
-    
+    //Added to prevent errors
     func goToNextMonth() {
         selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
         generateMonthDays()
