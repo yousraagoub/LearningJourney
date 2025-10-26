@@ -30,7 +30,7 @@ struct OnboardingView: View {
                     Text("I want to learn")
                         .font(.system(size: 22))
                         
-                    TextField("Swift", text: $onboardingVM.subject)
+                    TextField("Swift", text: $onboardingVM.learner.subject)
                         .font(.system(size: 17))
                         .foregroundColor(.gray)
                     Divider()
@@ -68,14 +68,10 @@ struct OnboardingView: View {
                 .glassEffect(.clear.interactive())
                 .background(.primaryButton)
                 .cornerRadius(30)
-             
-                NavigationLink(
-                    destination: ActivityView(),
-                    isActive: $onboardingVM.shouldNavigate
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
+                //🟥 ⬇️ NEW Navigation API
+                .navigationDestination(isPresented: $onboardingVM.shouldNavigate){
+                    ActivityView(learnerM: onboardingVM.learner)
+                }
             
             }//VStack
             .padding()

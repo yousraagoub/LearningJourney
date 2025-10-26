@@ -6,7 +6,18 @@
 //
 import SwiftUI
 struct ActivityView: View {
-    @StateObject var activityVM = ActivityViewModel()
+    @StateObject var activityVM: ActivityViewModel
+    //🟥
+    init(learnerM: LearnerModel) {
+           _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
+       }
+    //🟥
+    var currentMonthString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: Date())
+    }
+    
     var body: some View {
         VStack{
             HStack{
@@ -36,15 +47,21 @@ struct ActivityView: View {
                    .stroke(Color.gray, lineWidth: 0.5)
                    .opacity(0.5)
                VStack(alignment: .leading){
+                   //🟥
+                   Text(currentMonthString)
+                           .font(.title3)
+                           .bold()
+                           .padding(.leading)
                    MultiDatePicker("Label", selection: .constant([]))
                        .frame(maxHeight: 78)
                        .tint(.blue) // 👈 change highlight color
                        .background(.thinMaterial)
                        .clipShape(RoundedRectangle(cornerRadius: 16))
                        .padding(.horizontal)
+                   
                    Divider()
                        .padding(.trailing, 10)
-                   Text("Learning *Placeholder*")
+                   Text("Learning \(activityVM.learnerM.subject)")
                        .font(.system(size: 16))
                        .bold()
                    HStack {
@@ -57,15 +74,7 @@ struct ActivityView: View {
                                Image(systemName: "flame.fill")
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.flameOranage)
-                               VStack (alignment: .leading){
-                                   Text("\(activityVM.showStreak())")
-                                       .font(.system(size: 24))
-                                       .bold()
-                                       .foregroundStyle(Color.white)
-                                   Text("Days of Learning")
-                                       .font(.system(size: 12))
-                                       .foregroundStyle(Color.white)
-                               }//VStack - For Count and Text
+                                StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak", color: .blue)
                            }//HStack - For Flame, Count, and Text
                        }//ZStack - For Streak Overlaping
                        ZStack{
@@ -77,15 +86,7 @@ struct ActivityView: View {
                                Image(systemName: "cube.fill")
                                    .font(.system(size: 15))
                                    .foregroundStyle(Color.cubeBlue)
-                               VStack (alignment: .leading){
-                                   Text("*100*")
-                                       .font(.system(size: 24))
-                                       .bold()
-                                       .foregroundStyle(Color.white)
-                                   Text("Days of Learning")
-                                       .font(.system(size: 12))
-                                       .foregroundStyle(Color.white)
-                               }//VStack - For Count and Text
+                               StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen", color: .teal)
                            }//HStack - For Cube, Count, and Text
                        }//ZStack - For Freeze Overlaping
                    }//HStack - For Streak and Freeze Count
@@ -95,40 +96,52 @@ struct ActivityView: View {
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)
             Button{
-                activityVM.LogAsLearned()
-            } label: {
+                activityVM.logAsLearned()
+            }
+            label: {
                 Text("Log as learned")
                     .font(.system(size: 36))
                     .foregroundStyle(Color.white)
                     .frame(width: 232, height: 100)
                     .bold()
             }
+            .disabled(activityVM.isLogButtonDisabled)
             .buttonStyle(.plain)
             .frame(width: 274, height: 274)
             .glassEffect(.clear.interactive().tint(.primaryButton))
             Spacer()
             Button{
+                activityVM.useFreeze()
             } label: {
                 Text("Log as freezed")
             }
+            .disabled(activityVM.isFreezeButtonDisabled)
             .buttonStyle(.plain)
             .font(.system(size: 17))
             .foregroundColor(Color(.white))
             .frame(width: 274, height: 48)
             .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
-            Button{
-            }label: {
-                Text("*1* out of *2* freezes used")
-            }
-            .buttonStyle(.plain)
-            .font(.system(size: 14))
-            .foregroundColor(Color(.gray))
+            
+            Text("*1* out of *2* freezes used")
+                .font(.system(size: 14))
+                .foregroundColor(Color(.gray))
 
         }//VStack
         .padding()
+        .onAppear {
+            activityVM.checkStreakResetCondition()
+        }
     }//body
 }//struct
 
 #Preview {
-    ActivityView()
+    
+    ActivityView(learnerM: LearnerModel(
+        subject: "Swift",
+        duration: .month,
+        startDate: Date(),
+        streak: 3,
+        freezeCount: 1,
+        freezeLimit: 8
+    ))
 }
