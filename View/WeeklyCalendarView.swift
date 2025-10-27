@@ -137,8 +137,8 @@ struct WeeklyCalendarView: View {
     
     // MARK: - Helper
     private func backgroundColor(for day: Day) -> Color {
-        if day.isCurrent { return (activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .freezePrimaryButton : .onboardingLogoBG ) : .currentDayCalendar) }
-        if day.isLogged { return .onboardingLogoBG }
+        if day.isCurrent { return (activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .freezePrimaryButton : .streakBG ) : .currentDayCalendar) }
+        if day.isLogged { return .streakBG }
         if day.isFreezed { return .freezeBG }
         return .clear
     }

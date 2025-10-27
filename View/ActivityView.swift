@@ -114,6 +114,6 @@ struct ActivityView: View {
         startDate: Date(),
         streak: 3,
         freezeCount: 8,
-        freezeLimit: 8
+        freezeLimit: 3
     ))
 }
