@@ -82,7 +82,7 @@ struct ActivityView: View {
                 .font(.system(size: 17))
                 .foregroundColor(Color(.white))
                 .frame(width: 274, height: 48)
-                .glassEffect(.regular.interactive().tint(Color(activityVM.didUseFreezeToday ? .disabledLogFreeze : .freezePrimaryButton)))
+                .glassEffect(.regular.interactive().tint(Color(activityVM.didUseFreezeToday ? .disabledLogFreeze : (activityVM.isOutOfFreeze ? .disabledLogFreeze :.freezePrimaryButton))))
                 
                 Text("\(activityVM.learnerM.freezeCount) out of \(activityVM.learnerM.freezeLimit) freezes used")
                     .font(.system(size: 14))
@@ -113,7 +113,7 @@ struct ActivityView: View {
         duration: .month,
         startDate: Date(),
         streak: 3,
-        freezeCount: 1,
+        freezeCount: 8,
         freezeLimit: 8
     ))
 }

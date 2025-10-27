@@ -19,7 +19,7 @@ class ActivityViewModel: ObservableObject {
     @Published var isFreezeButtonDisabled = false
     
     @Published var didUseFreezeToday = false
-
+    @Published var isOutOfFreeze = false
     
     //🟥 Timer to re-enable buttons at midnight
     private var midnightTimer: Timer?
@@ -54,7 +54,10 @@ class ActivityViewModel: ObservableObject {
 
      func useFreeze() {
          guard !isFreezeButtonDisabled else { return }
-         guard learnerM.freezeCount < learnerM.freezeLimit else { return }
+         guard learnerM.freezeCount < learnerM.freezeLimit else {
+             isOutOfFreeze = true
+             return
+         }
 
          learnerM.freezeCount += 1
          lastLoggedDate = Date()
@@ -86,6 +89,7 @@ class ActivityViewModel: ObservableObject {
 
      private func updateButtonStates() {
          isFreezeButtonDisabled = learnerM.freezeCount >= learnerM.freezeLimit
+         isOutOfFreeze = learnerM.freezeCount >= learnerM.freezeLimit
          isLogButtonDisabled = false
      }
     //🟥
