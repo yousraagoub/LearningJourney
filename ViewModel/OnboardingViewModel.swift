@@ -14,8 +14,6 @@ class OnboardingViewModel {
     var startDate: Date = Date()
     //Object of the LearnerModel
     var learner = LearnerModel()
-    //To navigate from onboarding to activity
-    var shouldNavigate = false
     
     func createLearner() {
         learner = LearnerModel(
@@ -23,7 +21,6 @@ class OnboardingViewModel {
             duration: selectedDuration,
             startDate: startDate
         )
-        shouldNavigate = true
     }//func
     
     func selectDuration(_ duration: LearnerModel.Duration) {

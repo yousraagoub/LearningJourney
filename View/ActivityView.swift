@@ -56,21 +56,21 @@ struct ActivityView: View {
                     .padding(.bottom, 12)
                 }//ZStack - For Background Frame of Calendar and Counts
                 .frame(width: 365, height: 254)
-                .padding(.bottom, 40)
+                .padding(.bottom, 25)
                 Button{
                     activityVM.logAsLearned()
                 }
                 label: {
-                    Text("Log as learned")
+                    Text(activityVM.didUseFreezeToday ? "Day Freezed" : "Log as learned")
                         .font(.system(size: 36))
-                        .foregroundStyle(Color(activityVM.isLogButtonDisabled ? .flameOranage: .white))
+                        .foregroundStyle(Color(activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .cubeBlue : .flameOranage): .white))
                         .frame(width: 232, height: 100)
                         .bold()
                 }
                 .disabled(activityVM.isLogButtonDisabled)
                 .buttonStyle(.plain)
                 .frame(width: 274, height: 274)
-                .glassEffect(.clear.interactive().tint(Color(activityVM.isLogButtonDisabled ? .onboardingLogoBG: .primaryButton)))
+                .glassEffect(.clear.interactive().tint(Color(activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .dayFreezeBG : .onboardingLogoBG): .primaryButton)))
                 Spacer()
                 Button{
                     activityVM.useFreeze()
@@ -82,9 +82,9 @@ struct ActivityView: View {
                 .font(.system(size: 17))
                 .foregroundColor(Color(.white))
                 .frame(width: 274, height: 48)
-                .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
+                .glassEffect(.regular.interactive().tint(Color(activityVM.didUseFreezeToday ? .disabledLogFreeze : .freezePrimaryButton)))
                 
-                Text("*1* out of *2* freezes used")
+                Text("\(activityVM.learnerM.freezeCount) out of \(activityVM.learnerM.freezeLimit) freezes used")
                     .font(.system(size: 14))
                     .foregroundColor(Color(.gray))
                 

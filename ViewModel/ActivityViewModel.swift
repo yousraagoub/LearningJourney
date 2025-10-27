@@ -18,6 +18,9 @@ class ActivityViewModel: ObservableObject {
     @Published var isLogButtonDisabled = false
     @Published var isFreezeButtonDisabled = false
     
+    @Published var didUseFreezeToday = false
+
+    
     //🟥 Timer to re-enable buttons at midnight
     private var midnightTimer: Timer?
     
@@ -55,6 +58,7 @@ class ActivityViewModel: ObservableObject {
 
          learnerM.freezeCount += 1
          lastLoggedDate = Date()
+         didUseFreezeToday = true   // ✅ Track that freeze was used today
          disableButtonsUntilMidnight()
      }
 
@@ -105,6 +109,7 @@ class ActivityViewModel: ObservableObject {
     private func enableButtonsAtMidnight() {
           isLogButtonDisabled = false
           isFreezeButtonDisabled = learnerM.freezeCount >= learnerM.freezeLimit
+          didUseFreezeToday = false // ✅ reset text and colors for the new day
           setupMidnightReset() // schedule again for next day
       }
     //🟥

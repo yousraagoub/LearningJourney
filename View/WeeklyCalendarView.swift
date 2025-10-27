@@ -89,9 +89,13 @@ struct WeeklyCalendarView: View {
                     Divider()
                         .padding(.bottom, 12)
                     //Added by me
-                    Text("Learning \(activityVM.learnerM.subject)")
-                        .font(.system(size: 16))
-                        .bold()
+                    HStack{
+                        Text("Learning \(activityVM.learnerM.subject)")
+                            .font(.system(size: 16))
+                            .bold()
+                        Spacer() //To change the aligment of the text to be leading
+                    }
+                    .padding(.bottom, 12)
                     HStack {
                         ZStack{
                             RoundedRectangle(cornerRadius: 100)
@@ -105,6 +109,7 @@ struct WeeklyCalendarView: View {
                                  StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
                             }//HStack - For Flame, Count, and Text
                         }//ZStack - For Streak Overlaping
+                        .padding(.trailing, 13)
                         ZStack{
                             RoundedRectangle(cornerRadius: 100)
                                 .fill(Color.clear)

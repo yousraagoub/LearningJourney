@@ -23,11 +23,7 @@ struct CompactCalendarView: View {
                 WeeklyCalendarView(calendarVM: calendarVM, activityVM: activityVM)
                     .previewLayout(.sizeThatFits)
             }//VStack - For Calendar, Text, and Counts
-            .padding(.leading, 16)
-            .padding(.trailing, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 12)
         }//ZStack
-        .frame(width: 365, height: 254)
+        .frame(width: 350, height: 254)
     }//body
 }//struct
