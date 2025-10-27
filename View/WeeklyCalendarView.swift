@@ -91,7 +91,7 @@ struct WeeklyCalendarView: View {
                         .padding(.bottom, 12)
                     //Added by me
                     HStack{
-                        Text("Learning \(activityVM.learnerM.subject)")
+                        Text("Learning \(activityVM.onboardingVM.learnerM.subject)")
                             .font(.system(size: 16))
                             .bold()
                         Spacer() //To change the aligment of the text to be leading
@@ -107,7 +107,7 @@ struct WeeklyCalendarView: View {
                                 Image(systemName: "flame.fill")
                                     .font(.system(size: 15))
                                     .foregroundStyle(Color.flameOranage)
-                                 StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
+                                StreakFreezeView(count: activityVM.onboardingVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
                             }//HStack - For Flame, Count, and Text
                         }//ZStack - For Streak Overlaping
                         .padding(.trailing, 13)
@@ -120,7 +120,7 @@ struct WeeklyCalendarView: View {
                                 Image(systemName: "cube.fill")
                                     .font(.system(size: 15))
                                     .foregroundStyle(Color.cubeBlue)
-                                StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
+                                StreakFreezeView(count: activityVM.onboardingVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
                      
                             }//HStack - For Cube, Count, and Text
                         }//ZStack - For Freeze Overlaping

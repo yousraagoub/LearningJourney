@@ -6,24 +6,27 @@
 //
 import SwiftUI
 struct CalendarView: View {
-    @StateObject var activityVM: ActivityViewModel
+    @ObservedObject var activityVM: ActivityViewModel
 
-    init(learnerM: LearnerModel) {
-        _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
+    // Just a normal init that assigns the observed object
+    init(activityVM: ActivityViewModel) {
+        self.activityVM = activityVM
     }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
                 ForEach(generateMonths(), id: \.self) { monthDate in
-                    // Pass the monthDate into the ViewModel initializer
+                    // Create CalendarViewModel for each month
                     let viewModel = CalendarViewModel(
-                        learnerM: activityVM.learnerM,
+                        learnerM: activityVM.onboardingVM.learnerM,
                         selectedMonth: monthDate
                     )
 
                     MonthlyCalendarView(viewModel: viewModel)
-                        .padding(.horizontal)
+                        .onAppear {
+                            viewModel.setup() // ✅ safely generate days here
+                        }
                 }
             }
             .padding(.vertical)
@@ -44,13 +47,6 @@ struct CalendarView: View {
 
 
 #Preview {
-    CalendarView(learnerM: LearnerModel(
-        subject: "Swift",
-        duration: .month,
-        startDate: Date(),
-        streak: 3,
-        freezeCount: 1,
-        freezeLimit: 8
-    ))
+//    CalendarView(activityVM: activityVM)
 }
 

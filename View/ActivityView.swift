@@ -6,18 +6,21 @@
 //
 import SwiftUI
 struct ActivityView: View {
+    @ObservedObject var onboardingVM: OnboardingViewModel
     @StateObject var activityVM: ActivityViewModel
     @StateObject var calendarVM: CalendarViewModel
-    
+
     @State private var showCalendar = false
     @State private var showOnboarding = false
 
-    //🟥
-    init(learnerM: LearnerModel) {
-        _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
-        _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: learnerM))
+    // Custom initializer
+    init(onboardingVM: OnboardingViewModel) {
+        self.onboardingVM = onboardingVM
+        _activityVM = StateObject(wrappedValue: ActivityViewModel(onboardingVM: onboardingVM))
+        _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: onboardingVM.learnerM))
     }
-    
+
+
     var body: some View {
         NavigationStack{
             VStack{
@@ -48,7 +51,7 @@ struct ActivityView: View {
                 }//HStack - For Title and Tool Bar
                 ZStack {
                     VStack(alignment: .leading){
-                        CompactCalendarView(calendarVM: calendarVM,activityVM: activityVM)
+                        CompactCalendarView(activityVM: activityVM)
                     }//VStack - For Calendar, Text, and Counts
                     .padding(.leading, 16)
                     .padding(.trailing, 16)
@@ -84,7 +87,7 @@ struct ActivityView: View {
                 .frame(width: 274, height: 48)
                 .glassEffect(.regular.interactive().tint(Color(activityVM.didUseFreezeToday ? .disabledLogFreeze : (activityVM.isOutOfFreeze ? .disabledLogFreeze :.freezePrimaryButton))))
                 
-                Text("\(activityVM.learnerM.freezeCount) out of \(activityVM.learnerM.freezeLimit) freezes used")
+                Text("\(activityVM.onboardingVM.learnerM.freezeCount) out of \(activityVM.onboardingVM.learnerM.freezeLimit) freezes used")
                     .font(.system(size: 14))
                     .foregroundColor(Color(.gray))
                 
@@ -96,24 +99,19 @@ struct ActivityView: View {
             }
             // 👇 Add your navigation destinations here
             .navigationDestination(isPresented: $showCalendar) {
-                CalendarView(learnerM: activityVM.learnerM)
+                CalendarView(activityVM: activityVM)
             }
             .navigationDestination(isPresented: $showOnboarding) {
-                OnboardingView()
+                OnboardingView(onboardingVM: onboardingVM, isEditing: true) { learner in
+                    activityVM.resetForNewGoal(learnerM: learner)
+                }
             }
         }//NavigationStack
     }//body
     
 }//struct
 
-#Preview {
-    
-    ActivityView(learnerM: LearnerModel(
-        subject: "Swift",
-        duration: .month,
-        startDate: Date(),
-        streak: 3,
-        freezeCount: 8,
-        freezeLimit: 3
-    ))
-}
+//#Preview {
+//    
+//    ActivityView()
+//}

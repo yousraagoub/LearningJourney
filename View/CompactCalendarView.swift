@@ -6,24 +6,40 @@
 //
 import SwiftUI
 
+//
+//  DatePickerCompactView.swift
+//  LearningJourney
+//
+//  Created by Yousra Abdelrahman on 04/05/1447 AH.
+//
+
+import SwiftUI
+
 struct CompactCalendarView: View {
-    @ObservedObject var calendarVM: CalendarViewModel
-    @ObservedObject var activityVM: ActivityViewModel  // not @StateObject anymore
- 
+    @ObservedObject var activityVM: ActivityViewModel
+    @StateObject private var calendarVM: CalendarViewModel
+
+    // ✅ Use a custom initializer to pass learnerM safely
+    init(activityVM: ActivityViewModel) {
+        _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: activityVM.onboardingVM.learnerM))
+        self.activityVM = activityVM
+    }
+
     var body: some View {
-        ZStack{
-            RoundedRectangle(cornerRadius:13, style: .continuous)
+        ZStack {
+            RoundedRectangle(cornerRadius: 13, style: .continuous)
                 .fill(Color.gray.opacity(0.25))
                 .stroke(Color.gray, lineWidth: 0.5)
                 .opacity(0.5)
-            VStack(alignment: .leading){
-                //📅
-                //Here ⭕️
-                let calendarVM = CalendarViewModel(learnerM: activityVM.learnerM)
+
+            VStack(alignment: .leading) {
                 WeeklyCalendarView(calendarVM: calendarVM, activityVM: activityVM)
-                    .previewLayout(.sizeThatFits)
-            }//VStack - For Calendar, Text, and Counts
-        }//ZStack
+                    .onAppear {
+                        calendarVM.setup() // ✅ safely generate week/month data
+                    }
+            }
+        }
         .frame(width: 350, height: 254)
-    }//body
-}//struct
+    }
+}
+//struct

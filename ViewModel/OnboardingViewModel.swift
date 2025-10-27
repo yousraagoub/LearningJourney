@@ -5,25 +5,28 @@
 //  Created by Yousra Abdelrahman on 01/05/1447 AH.
 //
 import Foundation
-import SwiftUI
+internal import Combine
 
-@Observable
-class OnboardingViewModel {
-    var subject: String = ""
-    var selectedDuration: LearnerModel.Duration = .week
-    var startDate: Date = Date()
-    //Object of the LearnerModel
-    var learner = LearnerModel()
+class OnboardingViewModel: ObservableObject {
+    @Published var learnerM: LearnerModel
+    @Published var createdLearner: Bool = false
+    
+    init(learnerM: LearnerModel = LearnerModel()) {
+        self.learnerM = learnerM
+    }
     
     func createLearner() {
-        learner = LearnerModel(
-            subject: subject,
-            duration: selectedDuration,
-            startDate: startDate
-        )
-    }//func
+       
+        createdLearner = true
+    }
+    
+    func updateLearner(subject: String, duration: LearnerModel.Duration) {
+        learnerM.subject = subject
+        learnerM.duration = duration
+    }
     
     func selectDuration(_ duration: LearnerModel.Duration) {
-            selectedDuration = duration
-        }
-}//class
+        learnerM.duration = duration
+    }
+}
+//class
