@@ -81,6 +81,7 @@ struct WeeklyCalendarView: View {
                                 .frame(maxWidth: .infinity)
                                 .font(.system(size: 16, weight: .bold))
                                 .padding(6)
+                                .foregroundColor(foregroundColor(for: day))
                                 .background(backgroundColor(for: day))
                                 .clipShape(Circle())
                                 .foregroundColor(.white)
@@ -136,10 +137,16 @@ struct WeeklyCalendarView: View {
     
     // MARK: - Helper
     private func backgroundColor(for day: Day) -> Color {
-        if day.isCurrent { return .currentDayCalendar }
+        if day.isCurrent { return (activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .freezePrimaryButton : .onboardingLogoBG ) : .currentDayCalendar) }
         if day.isLogged { return .onboardingLogoBG }
         if day.isFreezed { return .freezeBG }
         return .clear
+    }
+    private func foregroundColor(for day: Day) -> Color {
+        if day.isCurrent { return (activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .cubeBlue : .flameOranage) : .white) }
+        if day.isLogged { return .flameOranage }
+        if day.isFreezed { return .cubeBlue }
+        return .white
     }
 }
 
