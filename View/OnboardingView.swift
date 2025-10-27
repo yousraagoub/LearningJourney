@@ -10,8 +10,9 @@ struct OnboardingView: View {
     //Object of the OnboardingViewModel
     @State var onboardingVM = OnboardingViewModel()
     
+    var onFinished: () -> Void = {}
+    
     var body: some View {
-        NavigationStack{
             VStack{
                 Image(systemName: "flame.fill")
                     .font(.system(size: 36))
@@ -59,6 +60,7 @@ struct OnboardingView: View {
                 .padding(.top, 40)
                 Button{
                     onboardingVM.createLearner()
+                    onFinished()  // This switches the root view to ActivityView
                 }label: {
                     Text("Start learning")
                 }
@@ -69,14 +71,11 @@ struct OnboardingView: View {
                 .glassEffect(.clear.interactive())
                 .background(.primaryButton)
                 .cornerRadius(30)
-                //🟥 ⬇️ NEW Navigation API
-                .navigationDestination(isPresented: $onboardingVM.shouldNavigate){
-                    ActivityView(learnerM: onboardingVM.learner)
-                }
+              
             
             }//VStack
             .padding()
-        }//NavigationStack
+     
         
         
     }//body

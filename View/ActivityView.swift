@@ -48,8 +48,7 @@ struct ActivityView: View {
                 }//HStack - For Title and Tool Bar
                 ZStack {
                     VStack(alignment: .leading){
-                        //📅
-                        DatePickerCompactView(calendarVM: calendarVM,activityVM: activityVM)
+                        CompactCalendarView(calendarVM: calendarVM,activityVM: activityVM)
                     }//VStack - For Calendar, Text, and Counts
                     .padding(.leading, 16)
                     .padding(.trailing, 16)
@@ -59,20 +58,19 @@ struct ActivityView: View {
                 .frame(width: 365, height: 254)
                 .padding(.bottom, 40)
                 Button{
-                    //Here ⭕️
                     activityVM.logAsLearned()
                 }
                 label: {
                     Text("Log as learned")
                         .font(.system(size: 36))
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(Color(activityVM.isLogButtonDisabled ? .flameOranage: .white))
                         .frame(width: 232, height: 100)
                         .bold()
                 }
                 .disabled(activityVM.isLogButtonDisabled)
                 .buttonStyle(.plain)
                 .frame(width: 274, height: 274)
-                .glassEffect(.clear.interactive().tint(.primaryButton))
+                .glassEffect(.clear.interactive().tint(Color(activityVM.isLogButtonDisabled ? .onboardingLogoBG: .primaryButton)))
                 Spacer()
                 Button{
                     activityVM.useFreeze()

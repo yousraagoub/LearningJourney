@@ -11,11 +11,13 @@ struct MonthlyCalendarView: View {
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
     var body: some View {
         VStack {
+            
             HStack {
                 Text(viewModel.selectedMonth, format: .dateTime.month().year())
                     .font(.title)
                     .bold()
                 Spacer()
+                
             }
             .padding()
             
@@ -31,6 +33,8 @@ struct MonthlyCalendarView: View {
                         .background(day.isCurrent ? Color.flameOranage : (day.isLogged ? Color.streakBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
                         .clipShape(Circle())
                         .foregroundColor(day.isCurrent || day.isLogged || day.isFreezed ? .white : .white)
+                    
+                   
                 }
             }
         }

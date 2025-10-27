@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct DatePickerCompactView: View {
+struct CompactCalendarView: View {
     @ObservedObject var calendarVM: CalendarViewModel
     @ObservedObject var activityVM: ActivityViewModel  // not @StateObject anymore
  
@@ -31,8 +31,3 @@ struct DatePickerCompactView: View {
         .frame(width: 365, height: 254)
     }//body
 }//struct
-
-
-//#Preview {
-//    DatePickerCompactView(activityVM: ActivityViewModel)
-//}
