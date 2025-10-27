@@ -8,6 +8,10 @@ import SwiftUI
 struct ActivityView: View {
     @StateObject var activityVM: ActivityViewModel
     @StateObject var calendarVM: CalendarViewModel
+    
+    @State private var showCalendar = false
+    @State private var showOnboarding = false
+
     //🟥
     init(learnerM: LearnerModel) {
         _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
@@ -15,79 +19,93 @@ struct ActivityView: View {
     }
     
     var body: some View {
-        VStack{
-            HStack{
-                Text("Activity")
-                    .font(.system(size: 34))
-                    .bold()
-                Spacer()
-                Group {
-                    Button{
+        NavigationStack{
+            VStack{
+                HStack{
+                    Text("Activity")
+                        .font(.system(size: 34))
+                        .bold()
+                    Spacer()
+                    Group {
+                        Button {
+                            showCalendar = true
+                        } label: {
+                            Image(systemName: "calendar")
+                        }
                         
-                    }label: {
-                        Image(systemName: "calendar")
+                        Button {
+                            showOnboarding = true
+                        } label: {
+                            Image(systemName: "pencil.and.outline")
+                        }
                     }
-                    Button{
-                    }label: {
-                        Image(systemName: "pencil.and.outline")
-                    }
-                }//Group - For Bar Buttons
+                    .buttonStyle(.plain)
+                    .font(.system(size: 22))
+                    .frame(width: 44, height: 44)
+                    .glassEffect(.regular.interactive().tint(.gray.opacity(0.1)))
+                    
+                    
+                }//HStack - For Title and Tool Bar
+                ZStack {
+                    VStack(alignment: .leading){
+                        //📅
+                        DatePickerCompactView(calendarVM: calendarVM,activityVM: activityVM)
+                    }//VStack - For Calendar, Text, and Counts
+                    .padding(.leading, 16)
+                    .padding(.trailing, 16)
+                    .padding(.top, 12)
+                    .padding(.bottom, 12)
+                }//ZStack - For Background Frame of Calendar and Counts
+                .frame(width: 365, height: 254)
+                .padding(.bottom, 40)
+                Button{
+                    //Here ⭕️
+                    activityVM.logAsLearned()
+                }
+                label: {
+                    Text("Log as learned")
+                        .font(.system(size: 36))
+                        .foregroundStyle(Color.white)
+                        .frame(width: 232, height: 100)
+                        .bold()
+                }
+                .disabled(activityVM.isLogButtonDisabled)
                 .buttonStyle(.plain)
-                .font(.system(size: 22))
-                .frame(width: 44, height: 44)
-                .glassEffect(.regular.interactive().tint(.gray.opacity(0.1)))
+                .frame(width: 274, height: 274)
+                .glassEffect(.clear.interactive().tint(.primaryButton))
+                Spacer()
+                Button{
+                    activityVM.useFreeze()
+                } label: {
+                    Text("Log as freezed")
+                }
+                .disabled(activityVM.isFreezeButtonDisabled)
+                .buttonStyle(.plain)
+                .font(.system(size: 17))
+                .foregroundColor(Color(.white))
+                .frame(width: 274, height: 48)
+                .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
                 
-            }//HStack - For Title and Tool Bar
-           ZStack {
-               VStack(alignment: .leading){
-                   //📅
-                   DatePickerCompactView(calendarVM: calendarVM,activityVM: activityVM)
-               }//VStack - For Calendar, Text, and Counts
-               .padding(.leading, 16)
-               .padding(.trailing, 16)
-               .padding(.top, 12)
-               .padding(.bottom, 12)
-            }//ZStack - For Background Frame of Calendar and Counts
-           .frame(width: 365, height: 254)
-           .padding(.bottom, 40)
-            Button{
-                //Here ⭕️
-                activityVM.logAsLearned()
-            }
-            label: {
-                Text("Log as learned")
-                    .font(.system(size: 36))
-                    .foregroundStyle(Color.white)
-                    .frame(width: 232, height: 100)
-                    .bold()
-            }
-            .disabled(activityVM.isLogButtonDisabled)
-            .buttonStyle(.plain)
-            .frame(width: 274, height: 274)
-            .glassEffect(.clear.interactive().tint(.primaryButton))
-            Spacer()
-            Button{
-                activityVM.useFreeze()
-            } label: {
-                Text("Log as freezed")
-            }
-            .disabled(activityVM.isFreezeButtonDisabled)
-            .buttonStyle(.plain)
-            .font(.system(size: 17))
-            .foregroundColor(Color(.white))
-            .frame(width: 274, height: 48)
-            .glassEffect(.regular.interactive().tint(.freezePrimaryButton))
+                Text("*1* out of *2* freezes used")
+                    .font(.system(size: 14))
+                    .foregroundColor(Color(.gray))
+                
+            }//VStack
+            .padding()
             
-            Text("*1* out of *2* freezes used")
-                .font(.system(size: 14))
-                .foregroundColor(Color(.gray))
-
-        }//VStack
-        .padding()
-        .onAppear {
-            activityVM.checkStreakResetCondition()
-        }
+            .onAppear {
+                activityVM.checkStreakResetCondition()
+            }
+            // 👇 Add your navigation destinations here
+            .navigationDestination(isPresented: $showCalendar) {
+                CalendarView(learnerM: activityVM.learnerM)
+            }
+            .navigationDestination(isPresented: $showOnboarding) {
+                OnboardingView()
+            }
+        }//NavigationStack
     }//body
+    
 }//struct
 
 #Preview {
