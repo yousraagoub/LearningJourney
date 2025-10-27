@@ -8,8 +8,8 @@ import Foundation
 internal import Combine
 
 class CalendarViewModel: ObservableObject {
-    @Published var currentDate: Date = Date()
-    @Published var selectedMonth: Date = Date()
+    @Published var currentDate: Date = Date()            // used for weekly view
+    @Published var selectedMonth: Date = Date()          // which month this VM represents
     @Published var showMonthPicker: Bool = false
 
     @Published var weekDays: [String] = ["SUN","MON","TUE","WED","THU","FRI","SAT"]
@@ -17,15 +17,30 @@ class CalendarViewModel: ObservableObject {
     @Published var daysInMonth: [Day] = []
 
     var learnerM: LearnerModel
-    
-    init(learnerM: LearnerModel) {
+    private var calendar = Calendar.current
+
+    // UPDATED initializer — accept a selectedMonth
+    init(learnerM: LearnerModel, selectedMonth: Date = Date()) {
         self.learnerM = learnerM
+        self.selectedMonth = selectedMonth
+
+        // Make currentDate align with selectedMonth for weeks if you prefer
+        self.currentDate = selectedMonth
+
         generateWeekDays()
         generateMonthDays()
     }
 
+    // Helper to change the month and regenerate
+    func setMonth(_ month: Date) {
+        selectedMonth = month
+        // optionally sync currentDate too:
+        currentDate = month
+        generateMonthDays()
+        generateWeekDays()
+    }
+
     func generateWeekDays() {
-        let calendar = Calendar.current
         guard let weekStart = calendar.dateInterval(of: .weekOfMonth, for: currentDate)?.start else { return }
         daysInWeek = (0..<7).compactMap { offset in
             if let date = calendar.date(byAdding: .day, value: offset, to: weekStart) {
@@ -41,9 +56,10 @@ class CalendarViewModel: ObservableObject {
     }
 
     func generateMonthDays() {
-        let calendar = Calendar.current
         guard let monthInterval = calendar.dateInterval(of: .month, for: selectedMonth) else { return }
-        daysInMonth = (0..<calendar.dateComponents([.day], from: monthInterval.start, to: monthInterval.end).day!).compactMap { offset in
+        let daysCount = calendar.dateComponents([.day], from: monthInterval.start, to: monthInterval.end).day ?? 0
+
+        daysInMonth = (0..<daysCount).compactMap { offset in
             if let date = calendar.date(byAdding: .day, value: offset, to: monthInterval.start) {
                 return Day(
                     date: date,
@@ -55,24 +71,27 @@ class CalendarViewModel: ObservableObject {
             return nil
         }
     }
-    
+
     func goToNextWeek() {
-        currentDate = Calendar.current.date(byAdding: .weekOfMonth, value: 1, to: currentDate) ?? currentDate
+        currentDate = calendar.date(byAdding: .weekOfMonth, value: 1, to: currentDate) ?? currentDate
         generateWeekDays()
     }
-    
+
     func goToPreviousWeek() {
-        currentDate = Calendar.current.date(byAdding: .weekOfMonth, value: -1, to: currentDate) ?? currentDate
+        currentDate = calendar.date(byAdding: .weekOfMonth, value: -1, to: currentDate) ?? currentDate
         generateWeekDays()
     }
-    //Added to prevent errors
+
+    // month navigation: use setMonth so everything regenerates consistently
     func goToNextMonth() {
-        selectedMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
-        generateMonthDays()
+        if let next = calendar.date(byAdding: .month, value: 1, to: selectedMonth) {
+            setMonth(next)
+        }
     }
-    
+
     func goToPreviousMonth() {
-        selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
-        generateMonthDays()
+        if let prev = calendar.date(byAdding: .month, value: -1, to: selectedMonth) {
+            setMonth(prev)
+        }
     }
 }

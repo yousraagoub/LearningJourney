@@ -12,18 +12,10 @@ struct MonthlyCalendarView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(viewModel.selectedMonth, style: .date)
+                Text(viewModel.selectedMonth, format: .dateTime.month().year())
                     .font(.title)
                     .bold()
                 Spacer()
-                Button(action: { viewModel.goToPreviousMonth() }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(Color.flameOranage)
-                }
-                Button(action: { viewModel.goToNextMonth() }) {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(Color.flameOranage)
-                }
             }
             .padding()
             
