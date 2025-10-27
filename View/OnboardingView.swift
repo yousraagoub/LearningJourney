@@ -9,6 +9,7 @@ import SwiftUI
 struct OnboardingView: View {
     //Object of the OnboardingViewModel
     @State var onboardingVM = OnboardingViewModel()
+    
     var body: some View {
         NavigationStack{
             VStack{

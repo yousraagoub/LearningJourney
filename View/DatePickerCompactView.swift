@@ -7,10 +7,9 @@
 import SwiftUI
 
 struct DatePickerCompactView: View {
-    @StateObject var activityVM: ActivityViewModel
-    init(learnerM: LearnerModel) {
-           _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
-       }
+    @ObservedObject var calendarVM: CalendarViewModel
+    @ObservedObject var activityVM: ActivityViewModel  // not @StateObject anymore
+ 
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius:13, style: .continuous)
@@ -19,8 +18,9 @@ struct DatePickerCompactView: View {
                 .opacity(0.5)
             VStack(alignment: .leading){
                 //📅
+                //Here ⭕️
                 let calendarVM = CalendarViewModel(learnerM: activityVM.learnerM)
-                WeeklyCalendarView(calendarVM: calendarVM)
+                WeeklyCalendarView(calendarVM: calendarVM, activityVM: activityVM)
                     .previewLayout(.sizeThatFits)
             }//VStack - For Calendar, Text, and Counts
             .padding(.leading, 16)
@@ -33,13 +33,6 @@ struct DatePickerCompactView: View {
 }//struct
 
 
-#Preview {
-    DatePickerCompactView(learnerM: LearnerModel(
-        subject: "Swift",
-        duration: .month,
-        startDate: Date(),
-        streak: 3,
-        freezeCount: 1,
-        freezeLimit: 8
-    ))
-}
+//#Preview {
+//    DatePickerCompactView(activityVM: ActivityViewModel)
+//}

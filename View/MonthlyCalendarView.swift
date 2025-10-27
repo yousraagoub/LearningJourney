@@ -8,9 +8,7 @@ import SwiftUI
 
 struct MonthlyCalendarView: View {
     @ObservedObject var viewModel: CalendarViewModel
-    
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
-    
     var body: some View {
         VStack {
             HStack {

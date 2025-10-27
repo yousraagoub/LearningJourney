@@ -8,8 +8,8 @@ import SwiftUI
 
 struct WeeklyCalendarView: View {
     @ObservedObject var calendarVM: CalendarViewModel
+    @ObservedObject var activityVM: ActivityViewModel
     @Environment(\.colorScheme) var colorScheme
-    
     var body: some View {
         VStack(spacing: 10) {
             // MARK: - Header: Month + Year with Arrow
@@ -33,7 +33,6 @@ struct WeeklyCalendarView: View {
                 .buttonStyle(.plain)
                 
                 Spacer()
-                
                 // Week navigation
                 HStack(spacing: 16) {
                     Button(action: { calendarVM.goToPreviousWeek() }) {
@@ -47,7 +46,6 @@ struct WeeklyCalendarView: View {
                 }
             }
             .padding(.horizontal)
-            
             // MARK: - Inline Month Picker
             if calendarVM.showMonthPicker {
                 DatePicker(
@@ -63,7 +61,6 @@ struct WeeklyCalendarView: View {
                     calendarVM.generateWeekDays()
                 }
             }
-            
             // MARK: - Hidden Content When Month Picker Expanded
             if !calendarVM.showMonthPicker {
                 VStack {
@@ -92,7 +89,7 @@ struct WeeklyCalendarView: View {
                     Divider()
                         .padding(.bottom, 12)
                     //Added by me
-                    Text("Learning \(calendarVM.learnerM.subject)")
+                    Text("Learning \(activityVM.learnerM.subject)")
                         .font(.system(size: 16))
                         .bold()
                     HStack {
@@ -105,7 +102,7 @@ struct WeeklyCalendarView: View {
                                 Image(systemName: "flame.fill")
                                     .font(.system(size: 15))
                                     .foregroundStyle(Color.flameOranage)
-                                 StreakFreezeView(count: calendarVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
+                                 StreakFreezeView(count: activityVM.learnerM.streak, singular: "Day Streak", plural: "Days Streak")
                             }//HStack - For Flame, Count, and Text
                         }//ZStack - For Streak Overlaping
                         ZStack{
@@ -117,7 +114,7 @@ struct WeeklyCalendarView: View {
                                 Image(systemName: "cube.fill")
                                     .font(.system(size: 15))
                                     .foregroundStyle(Color.cubeBlue)
-                                StreakFreezeView(count: calendarVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
+                                StreakFreezeView(count: activityVM.learnerM.freezeCount, singular: "Day Frozen", plural: "Days Frozen")
                      
                             }//HStack - For Cube, Count, and Text
                         }//ZStack - For Freeze Overlaping
@@ -140,3 +137,5 @@ struct WeeklyCalendarView: View {
         return .clear
     }
 }
+
+

@@ -7,10 +7,12 @@
 import SwiftUI
 struct ActivityView: View {
     @StateObject var activityVM: ActivityViewModel
+    @StateObject var calendarVM: CalendarViewModel
     //🟥
     init(learnerM: LearnerModel) {
-           _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
-       }
+        _activityVM = StateObject(wrappedValue: ActivityViewModel(learnerM: learnerM))
+        _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: learnerM))
+    }
     
     var body: some View {
         VStack{
@@ -39,7 +41,7 @@ struct ActivityView: View {
            ZStack {
                VStack(alignment: .leading){
                    //📅
-                   DatePickerCompactView(learnerM: activityVM.learnerM)
+                   DatePickerCompactView(calendarVM: calendarVM,activityVM: activityVM)
                }//VStack - For Calendar, Text, and Counts
                .padding(.leading, 16)
                .padding(.trailing, 16)
@@ -49,6 +51,7 @@ struct ActivityView: View {
            .frame(width: 365, height: 254)
            .padding(.bottom, 40)
             Button{
+                //Here ⭕️
                 activityVM.logAsLearned()
             }
             label: {
