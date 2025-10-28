@@ -16,6 +16,7 @@ struct OnboardingView: View {
         self.onboardingVM = onboardingVM
         self.isEditing = isEditing
         self.onFinished = onFinished
+//        UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
     }
     
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
@@ -70,7 +71,7 @@ struct OnboardingView: View {
                     .padding(.top, 40)
                     Button{
                         onboardingVM.createLearner()
-                        onFinished(onboardingVM.learnerM)  // This switches the root view to ActivityView
+                        onFinished(onboardingVM.learnerM)  // ✅ triggers app to switch root
                     }label: {
                         Text(isEditing ? "Save Changes" : "Start learning")
                     }
