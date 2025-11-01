@@ -1,27 +1,18 @@
-//
-//  LearningJourneyApp.swift
-//  LearningJourney
-//
-
 import SwiftUI
-
+//@main determines the app entry point.
 @main
 struct LearningJourneyApp: App {
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @StateObject private var onboardingVM = OnboardingViewModel()
     
     var body: some Scene {
         WindowGroup {
-            if hasCompletedOnboarding {
-                // ✅ Normal flow
+            if onboardingVM.createdLearner {
                 ActivityView(onboardingVM: onboardingVM)
             } else {
-                // ✅ First-launch onboarding
-                OnboardingView(onboardingVM: onboardingVM) { learner in
-                    hasCompletedOnboarding = true
-                }
+                OnboardingView(onboardingVM: onboardingVM)
             }
         }
     }
 }
+
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LearnerModel: Identifiable{ //Codable is for later...
+struct LearnerModel: Identifiable, Codable{
     var id: UUID = UUID()
     var subject: String = ""
     var duration: Duration = .week
@@ -17,6 +17,9 @@ struct LearnerModel: Identifiable{ //Codable is for later...
     var freezeLimit: Int = 0
     var loggedDates: [Date] = []  // days marked as learned
     var freezedDates: [Date] = [] // days marked as frozen
+    var lastActionDate: Date? = nil
+
+    //🧮 Computed property
     var endDate: Date {
         let calendar = Calendar.current
         switch duration {
@@ -29,10 +32,16 @@ struct LearnerModel: Identifiable{ //Codable is for later...
         }//switch
     }//endDate
     //To use an enum in a ForEach, it must conform to CaseIterable (so you can access .allCases) and to Identifiable or Hashable (so SwiftUI can track each element uniquely).
-    enum Duration: String, CaseIterable, Identifiable {
+    //It has to conform to Codable, so it won't be in conflict with the other codable properties of Learner Model.
+    enum Duration: String, CaseIterable, Identifiable, Codable {
         case week, month, year
         
         // makes it identifiable
         var id: String { self.rawValue }
     }//enum Duration
+    
+    // ✅ Only encode/decode these keys (no endDate)
+    enum CodingKeys: String, CodingKey {
+        case id, subject, duration, startDate, streak, freezeCount, freezeLimit, loggedDates, freezedDates, lastActionDate
+    }
 }//struct

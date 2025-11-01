@@ -1,12 +1,7 @@
-//
-//  CalendarViewModel.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 30/04/1447 AH.
-//
+import Combine
 import Foundation
-internal import Combine
 
+@MainActor
 class CalendarViewModel: ObservableObject {
     @Published var currentDate: Date = Date()            // used for weekly view
     @Published var selectedMonth: Date = Date()          // which month this VM represents

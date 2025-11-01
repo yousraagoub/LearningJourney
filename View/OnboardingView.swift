@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-internal import Combine
+
 struct OnboardingView: View {
     @ObservedObject var onboardingVM: OnboardingViewModel
     var onFinished: (LearnerModel) -> Void = { _ in }
@@ -16,27 +16,31 @@ struct OnboardingView: View {
         self.onboardingVM = onboardingVM
         self.isEditing = isEditing
         self.onFinished = onFinished
-//        UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
     }
     
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     
     
     var body: some View {
             NavigationStack{
                 VStack{
-                    Image(systemName: "flame.fill")
-                        .font(.system(size: 36))
-                        .foregroundStyle(Color(.flameOranage))
-                        .frame(width: 109, height: 109)
-                        .glassEffect(.clear)
-                        .background(.onboardingLogoBG)
-                        .cornerRadius(100)
+                    if isEditing {
+                        Text("Learning Goal")
+                            .font(.system(size: 13))
+                            .bold()
+                    } else {
+                        Image(systemName: "flame.fill")
+                            .font(.system(size: 36))
+                            .foregroundStyle(Color(.flameOranage))
+                            .frame(width: 109, height: 109)
+                            .glassEffect(.clear)
+                            .background(.onboardingLogoBG)
+                            .cornerRadius(100)
+                    }
                     VStack(alignment: .leading){
-                        Text("Hello Learner")
+                        Text(isEditing ? "" : "Hello Learner")
                             .font(.system(size: 34))
                             .bold()
-                        Text("This app will help you learn everyday!")
+                        Text(isEditing ? "" : "This app will help you learn everyday!")
                             .font(.system(size: 17))
                             .foregroundColor(.gray)
                             .padding(.bottom, 20)
