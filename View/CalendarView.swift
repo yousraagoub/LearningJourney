@@ -17,16 +17,12 @@ struct CalendarView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
                 ForEach(generateMonths(), id: \.self) { monthDate in
-                    // Create CalendarViewModel for each month
-                    let viewModel = CalendarViewModel(
-                        learnerM: activityVM.onboardingVM.learnerM,
-                        selectedMonth: monthDate
+                    MonthlyCalendarView(
+                        calendarVM: activityVM.calendarVM,
+                        monthDate: monthDate
                     )
+                }
 
-                    MonthlyCalendarView(viewModel: viewModel)
-                        .onAppear {
-                            viewModel.setup() // ✅ safely generate days here
-                        }
                 }
             }
             .padding(.vertical)
@@ -43,7 +39,7 @@ struct CalendarView: View {
             calendar.date(byAdding: .month, value: $0, to: current)
         }
     }
-}
+
 
 
 #Preview {

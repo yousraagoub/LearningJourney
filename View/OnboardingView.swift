@@ -87,7 +87,13 @@ struct OnboardingView: View {
                     .background(.primaryButton)
                     .cornerRadius(30)
                   
-                
+                    Button(role: .destructive) {
+                        onboardingVM.deleteLearner()
+                        // Optionally show onboarding again
+                    } label: {
+                        Text("Start Fresh")
+                    }
+ 
                 }//VStack
                 .padding()
             }

@@ -14,6 +14,8 @@ class ActivityViewModel: ObservableObject {
     @Published var isFreezeButtonDisabled = false
     @Published var didUseFreezeToday = false
     @Published var isOutOfFreeze = false
+    //🟥
+    @Published var calendarVM: CalendarViewModel
     
     //Timer to re-enable buttons at midnight.
     private var midnightTimer: Timer?
@@ -22,6 +24,8 @@ class ActivityViewModel: ObservableObject {
     init(onboardingVM: OnboardingViewModel) {
         //🟥 Why self. ???
         self.onboardingVM = onboardingVM
+        //🟥
+        self.calendarVM = CalendarViewModel(learnerM: onboardingVM.learnerM)
         setupFreezeLimit()
         setupMidnightReset()
         updateButtonStates()
@@ -47,6 +51,10 @@ class ActivityViewModel: ObservableObject {
         onboardingVM.learnerM.streak += 1
         //🟥 Assuming it is for loggedDates stack ?? 
         onboardingVM.learnerM.loggedDates.append(Date())
+        
+        // ✅ Refresh visuals
+        calendarVM.refresh()
+        
         // ✅ record today's action
         onboardingVM.learnerM.lastActionDate = Date()
         
@@ -54,7 +62,12 @@ class ActivityViewModel: ObservableObject {
         // ✅ persist streak and log
         onboardingVM.saveLearner()
         
-        didUseFreezeToday = false 
+        didUseFreezeToday = false
+        
+        
+        
+        
+        
     }
         
     //🟥 MARK: - Using a Freeze
@@ -67,6 +80,11 @@ class ActivityViewModel: ObservableObject {
         onboardingVM.learnerM.freezeCount += 1
         //🟥 Assuming it is for loggedDates stack ??
         onboardingVM.learnerM.freezedDates.append(Date())
+        
+        // ✅ Refresh visuals
+        calendarVM.refresh()
+        
+        
         // ✅ record today's action
         onboardingVM.learnerM.lastActionDate = Date()
         
@@ -113,6 +131,12 @@ class ActivityViewModel: ObservableObject {
         onboardingVM.learnerM = updatedLearner
         onboardingVM.createdLearner = true
         onboardingVM.saveLearner()
+        
+        // ✅ keep calendar synced
+        calendarVM.learnerM = learnerM
+        // ✅ refresh calendar days
+        calendarVM.setup()
+
 
         updateButtonStates()
     }

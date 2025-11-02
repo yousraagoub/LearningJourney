@@ -3,8 +3,22 @@ import Foundation
 
 @MainActor
 class CalendarViewModel: ObservableObject {
-    @Published var currentDate: Date = Date()            // used for weekly view
-    @Published var selectedMonth: Date = Date()          // which month this VM represents
+    // used for weekly view
+    @Published var currentDate: Date = Date() {
+        didSet {
+            selectedMonth = currentDate
+        }
+    }
+    // which month this VM represents
+    @Published var selectedMonth: Date = Date() {
+        didSet {
+            currentDate = selectedMonth
+            generateWeekDays()
+            generateMonthDays()
+    }
+}
+    
+    
     @Published var showMonthPicker: Bool = false
     
     @Published var weekDays: [String] = ["SUN","MON","TUE","WED","THU","FRI","SAT"]
@@ -19,9 +33,15 @@ class CalendarViewModel: ObservableObject {
     // ✅ Safe initializer — don’t call methods that depend on self
     init(learnerM: LearnerModel, selectedMonth: Date = Date()) {
         self.learnerM = learnerM
-        self.selectedMonth = selectedMonth
-        self.currentDate = selectedMonth
+        generateWeekDays()
+        generateMonthDays()
         // ❌ No calls to generateWeekDays or generateMonthDays here
+    }
+    
+    
+    func refresh() {
+        generateWeekDays()
+        generateMonthDays()
     }
     
     // ✅ Call this from the View or onAppear
@@ -93,4 +113,23 @@ class CalendarViewModel: ObservableObject {
             setMonth(prev)
         }
     }
+    
+    //Helper
+    func days(for month: Date) -> [Day] {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else { return [] }
+        let daysCount = calendar.dateComponents([.day], from: monthInterval.start, to: monthInterval.end).day ?? 0
+        
+        return (0..<daysCount).compactMap { offset in
+            if let date = calendar.date(byAdding: .day, value: offset, to: monthInterval.start) {
+                return Day(
+                    date: date,
+                    isCurrent: calendar.isDateInToday(date),
+                    isLogged: learnerM.loggedDates.contains { calendar.isDate($0, inSameDayAs: date) },
+                    isFreezed: learnerM.freezedDates.contains { calendar.isDate($0, inSameDayAs: date) }
+                )
+            }
+            return nil
+        }
+    }
+
 }

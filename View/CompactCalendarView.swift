@@ -17,14 +17,7 @@ import SwiftUI
 
 struct CompactCalendarView: View {
     @ObservedObject var activityVM: ActivityViewModel
-    @StateObject private var calendarVM: CalendarViewModel
-
-    // ✅ Use a custom initializer to pass learnerM safely
-    init(activityVM: ActivityViewModel) {
-        _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: activityVM.onboardingVM.learnerM))
-        self.activityVM = activityVM
-    }
-
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 13, style: .continuous)
@@ -33,10 +26,11 @@ struct CompactCalendarView: View {
                 .opacity(0.5)
 
             VStack(alignment: .leading) {
-                WeeklyCalendarView(calendarVM: calendarVM, activityVM: activityVM)
-                    .onAppear {
-                        calendarVM.setup() // ✅ safely generate week/month data
-                    }
+                WeeklyCalendarView(
+                    calendarVM:
+                        activityVM.calendarVM,
+                        activityVM: activityVM
+                )
             }
         }
         .frame(width: 350, height: 254)

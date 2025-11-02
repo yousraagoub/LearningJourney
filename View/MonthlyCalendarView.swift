@@ -7,13 +7,15 @@
 import SwiftUI
 
 struct MonthlyCalendarView: View {
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject var calendarVM: CalendarViewModel
+    var monthDate: Date
+    
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
     var body: some View {
         VStack {
             
             HStack {
-                Text(viewModel.selectedMonth, format: .dateTime.month().year())
+                Text(monthDate , format: .dateTime.month().year())
                     .font(.title)
                     .bold()
                 Spacer()
@@ -22,11 +24,11 @@ struct MonthlyCalendarView: View {
             .padding()
             
             LazyVGrid(columns: columns) {
-                ForEach(viewModel.weekDays, id: \.self) { day in
+                ForEach(calendarVM.weekDays, id: \.self) { day in
                     Text(day)
                 }
                 
-                ForEach(viewModel.daysInMonth) { day in
+                ForEach(calendarVM.days(for: monthDate)) { day in
                     Text("\(Calendar.current.component(.day, from: day.date))")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(8)
