@@ -7,6 +7,7 @@ struct MonthlyCalendarView: View {
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
     var body: some View {
         VStack {
+            
             Divider()
             HStack {
                 Text(monthDate , format: .dateTime.month().year())
@@ -28,9 +29,9 @@ struct MonthlyCalendarView: View {
                     Text("\(Calendar.current.component(.day, from: day.date))")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(8)
-                        .background(day.isCurrent ? Color.flameOranage : (day.isLogged ? Color.streakBG : (day.isFreezed ? Color.freezeBG : Color.clear)))
+                        .background(day.isCurrent && day.isLogged ? Color.streakBG : (day.isCurrent && day.isFreezed ? Color.freezeBG : (day.isCurrent ? Color.flameOranage : (day.isLogged ? Color.streakBG : (day.isFreezed ? Color.freezeBG : Color.clear)))))
                         .clipShape(Circle())
-                        .foregroundColor(day.isCurrent || day.isLogged || day.isFreezed ? .white : .white)
+                        .foregroundColor(day.isCurrent && day.isLogged ? Color.flameOranage : (day.isCurrent && day.isFreezed ? Color.cubeBlue : (day.isCurrent ? Color.white : (day.isLogged ? Color.flameOranage : (day.isFreezed ? Color.freezeBG : Color.white)))))
                         .bold()
                     
                    
