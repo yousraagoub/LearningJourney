@@ -26,10 +26,14 @@ class ActivityViewModel: ObservableObject {
         self.onboardingVM = onboardingVM
         //🟥
         self.calendarVM = CalendarViewModel(learnerM: onboardingVM.learnerM)
-        setupFreezeLimit()
-        setupMidnightReset()
-        updateButtonStates()
-        restoreButtonStates()
+        
+        // Run setup *after* init finishes to avoid publishing during view updates
+        DispatchQueue.main.async { [weak self] in
+            self?.setupFreezeLimit()
+            self?.setupMidnightReset()
+            self?.updateButtonStates()
+            self?.restoreButtonStates()
+        }
         
     }
     

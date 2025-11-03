@@ -5,14 +5,18 @@ import Foundation
 class CalendarViewModel: ObservableObject {
     // used for weekly view
     @Published var currentDate: Date = Date() {
-        didSet {
-            selectedMonth = currentDate
+        didSet  {
+            if !Calendar.current.isDate(currentDate, inSameDayAs: selectedMonth) {
+                selectedMonth = currentDate
+            }
         }
     }
     // which month this VM represents
     @Published var selectedMonth: Date = Date() {
         didSet {
-            currentDate = selectedMonth
+            if !Calendar.current.isDate(selectedMonth, inSameDayAs: currentDate) {
+                        currentDate = selectedMonth
+            }
             generateWeekDays()
             generateMonthDays()
     }
