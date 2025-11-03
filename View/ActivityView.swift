@@ -1,9 +1,4 @@
-//
-//  ActivityView.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 29/04/1447 AH.
-//
+
 import SwiftUI
 struct ActivityView: View {
     @ObservedObject var onboardingVM: OnboardingViewModel

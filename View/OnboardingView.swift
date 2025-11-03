@@ -1,10 +1,3 @@
-//
-//  OnboardingView.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 29/04/1447 AH.
-//
-
 import SwiftUI
 
 struct OnboardingView: View {
@@ -17,8 +10,6 @@ struct OnboardingView: View {
         self.isEditing = isEditing
         self.onFinished = onFinished
     }
-    
-    
     
     var body: some View {
             NavigationStack{

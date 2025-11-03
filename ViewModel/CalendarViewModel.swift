@@ -3,25 +3,12 @@ import Foundation
 
 @MainActor
 class CalendarViewModel: ObservableObject {
-    // used for weekly view
-    @Published var currentDate: Date = Date() {
-        didSet  {
-            if !Calendar.current.isDate(currentDate, inSameDayAs: selectedMonth) {
-                selectedMonth = currentDate
-            }
-        }
-    }
-    // which month this VM represents
     @Published var selectedMonth: Date = Date() {
         didSet {
-            if !Calendar.current.isDate(selectedMonth, inSameDayAs: currentDate) {
-                        currentDate = selectedMonth
-            }
             generateWeekDays()
             generateMonthDays()
+        }
     }
-}
-    
     
     @Published var showMonthPicker: Bool = false
     
@@ -58,13 +45,13 @@ class CalendarViewModel: ObservableObject {
     func setMonth(_ month: Date) {
         selectedMonth = month
         // optionally sync currentDate too:
-        currentDate = month
+        selectedMonth = month
         generateMonthDays()
         generateWeekDays()
     }
     
     func generateWeekDays() {
-        guard let weekStart = calendar.dateInterval(of: .weekOfMonth, for: currentDate)?.start else { return }
+        guard let weekStart = calendar.dateInterval(of: .weekOfMonth, for: selectedMonth)?.start else { return }
         daysInWeek = (0..<7).compactMap { offset in
             if let date = calendar.date(byAdding: .day, value: offset, to: weekStart) {
                 return Day(
@@ -96,12 +83,12 @@ class CalendarViewModel: ObservableObject {
     }
     
     func goToNextWeek() {
-        currentDate = calendar.date(byAdding: .weekOfMonth, value: 1, to: currentDate) ?? currentDate
+        selectedMonth = calendar.date(byAdding: .weekOfMonth, value: 1, to: selectedMonth) ?? selectedMonth
         generateWeekDays()
     }
     
     func goToPreviousWeek() {
-        currentDate = calendar.date(byAdding: .weekOfMonth, value: -1, to: currentDate) ?? currentDate
+        selectedMonth = calendar.date(byAdding: .weekOfMonth, value: -1, to: selectedMonth) ?? selectedMonth
         generateWeekDays()
     }
     

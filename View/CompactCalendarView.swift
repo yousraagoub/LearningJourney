@@ -1,18 +1,3 @@
-//
-//  DatePickerCompactView.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 04/05/1447 AH.
-//
-import SwiftUI
-
-//
-//  DatePickerCompactView.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 04/05/1447 AH.
-//
-
 import SwiftUI
 
 struct CompactCalendarView: View {

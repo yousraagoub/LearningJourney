@@ -1,9 +1,3 @@
-//
-//  CalendarView.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 30/04/1447 AH.
-//
 import SwiftUI
 struct CalendarView: View {
     @ObservedObject var activityVM: ActivityViewModel
