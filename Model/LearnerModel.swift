@@ -18,7 +18,7 @@ struct LearnerModel: Identifiable, Codable{
     var loggedDates: [Date] = []  // days marked as learned
     var freezedDates: [Date] = [] // days marked as frozen
     var lastActionDate: Date? = nil
-
+    var completedGoals: [CompletedGoal] = [] // ✅ new property
     //🧮 Computed property
     var endDate: Date {
         let calendar = Calendar.current
@@ -42,6 +42,15 @@ struct LearnerModel: Identifiable, Codable{
     
     // ✅ Only encode/decode these keys (no endDate)
     enum CodingKeys: String, CodingKey {
-        case id, subject, duration, startDate, streak, freezeCount, freezeLimit, loggedDates, freezedDates, lastActionDate
+        case id, subject, duration, startDate, streak, freezeCount, freezeLimit, loggedDates, freezedDates, lastActionDate, completedGoals
     }
 }//struct
+
+
+struct CompletedGoal: Identifiable, Codable {
+    let id = UUID()
+    let subject: String
+    let duration: LearnerModel.Duration
+    let completedDate: Date
+    let streakAchieved: Int
+}

@@ -17,6 +17,8 @@ class ActivityViewModel: ObservableObject {
     //🟥
     @Published var calendarVM: CalendarViewModel
     
+    @Published var isGoalAchieved: Bool = false
+    
     //Timer to re-enable buttons at midnight.
     private var midnightTimer: Timer?
     
@@ -35,6 +37,20 @@ class ActivityViewModel: ObservableObject {
             self?.restoreButtonStates()
         }
         
+    }
+    func checkGoalCompletion() {
+        let totalDays: Int
+        switch onboardingVM.learnerM.duration {
+        case .week:
+            totalDays = 7
+        case .month:
+            totalDays = 30
+        case .year:
+            totalDays = 365
+        }
+        
+        // ✅ Check if streak reached duration
+        isGoalAchieved = onboardingVM.learnerM.streak >= totalDays
     }
     
     //Setup freezes limit based on the choosen duration
@@ -69,7 +85,8 @@ class ActivityViewModel: ObservableObject {
         didUseFreezeToday = false
         
         
-        
+        checkGoalCompletion()
+
         
         
     }
@@ -97,6 +114,9 @@ class ActivityViewModel: ObservableObject {
         disableButtonsUntilMidnight()
         // ✅ persist freeze use
         onboardingVM.saveLearner()
+        
+        checkGoalCompletion()
+
     }
         
     //🟥 MARK: - Resetting and Conditions
@@ -115,14 +135,25 @@ class ActivityViewModel: ObservableObject {
     func resetForNewGoal(learnerM: LearnerModel) {
         var updatedLearner = learnerM
 
-        // ✅ Reset only goal-specific data
+        // ✅ Step 1: Archive the completed goal (if a goal was achieved)
+        if updatedLearner.streak > 0 {
+            let completedGoal = CompletedGoal(
+                subject: updatedLearner.subject,
+                duration: updatedLearner.duration,
+                completedDate: Date(),
+                streakAchieved: updatedLearner.streak
+            )
+            updatedLearner.completedGoals.append(completedGoal)
+        }
+
+        // ✅ Step 2: Reset only goal-specific data
         updatedLearner.startDate = Date()
         updatedLearner.streak = 0
         updatedLearner.freezeCount = 0
         updatedLearner.loggedDates.removeAll()
         updatedLearner.freezedDates.removeAll()
 
-        // ✅ Recalculate limits
+        // ✅ Step 3: Recalculate limits
         switch updatedLearner.duration {
             case .week:
                 updatedLearner.freezeLimit = 2
@@ -132,18 +163,19 @@ class ActivityViewModel: ObservableObject {
                 updatedLearner.freezeLimit = 96
         }
 
+        // ✅ Step 4: Apply and save
         onboardingVM.learnerM = updatedLearner
         onboardingVM.createdLearner = true
         onboardingVM.saveLearner()
-        
-        // ✅ keep calendar synced
-        calendarVM.learnerM = learnerM
-        // ✅ refresh calendar days
+
+        // ✅ Step 5: Sync calendar
+        calendarVM.learnerM = updatedLearner
         calendarVM.setup()
 
-
+        // ✅ Step 6: Refresh button states
         updateButtonStates()
     }
+
 
         
     //🟥 MARK: - Helpers for Button States
