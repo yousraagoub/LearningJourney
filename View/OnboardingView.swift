@@ -1,9 +1,8 @@
-
-
 import SwiftUI
 
 struct OnboardingView: View {
     @ObservedObject var onboardingVM: OnboardingViewModel
+    
     var onFinished: (LearnerModel) -> Void = { _ in }
     var isEditing: Bool = false
     
@@ -50,7 +49,6 @@ struct OnboardingView: View {
                             .font(.system(size: 22))
                             .padding(.top, 20)
                         HStack{
-                            //No need for (...id: \.self) anymore — because the enum is Identifiable.
                             ForEach(LearnerModel.Duration.allCases) {
                                 duration in Button {
                                     onboardingVM.selectDuration(duration)
@@ -96,10 +94,8 @@ struct OnboardingView: View {
                 .padding()
             }//NavigationStack
             .ignoresSafeArea(edges: .top)
-            // ensure this view does not create its own NavigationStack
-            .navigationBarTitleDisplayMode(.inline)        // prefers inline title (works well with .principal)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // principal toolbar item centers the text while preserving system back button at left
                 ToolbarItem(placement: .principal) {
                     Text(isEditing ? "Learning Goal" : "")
                         .font(.headline)
@@ -122,9 +118,12 @@ struct OnboardingView: View {
             .alert("Update Learning goal", isPresented: $showUpdateAlert) {
                 Button("Dismiss", role: .cancel) {}
                 Button("Update") {
-                    onboardingVM.createLearner() // ✅ Save updates
-                    onFinished(onboardingVM.learnerM) // ✅ Go back to ActivityView
-                    dismiss() // ✅ Dismiss update view
+                    //Save updates
+                    onboardingVM.createLearner()
+                    // Go back to ActivityView
+                    onFinished(onboardingVM.learnerM)
+                    //Dismiss update view
+                    dismiss()
                 }
             } message: {
                 Text("If you update now, your streak will start over.")

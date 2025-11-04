@@ -2,7 +2,6 @@ import SwiftUI
 struct CalendarView: View {
     @ObservedObject var activityVM: ActivityViewModel
 
-    // Just a normal init that assigns the observed object
     init(activityVM: ActivityViewModel) {
         self.activityVM = activityVM
     }
@@ -21,15 +20,13 @@ struct CalendarView: View {
                     
                 }
             }
-            .padding(.top, 70) // leave space for header
+            .padding(.top, 70)
             .padding(.vertical)
 
         }//ZStack
         .ignoresSafeArea(edges: .top)
-        // ensure this view does not create its own NavigationStack
-        .navigationBarTitleDisplayMode(.inline)        // prefers inline title (works well with .principal)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            // principal toolbar item centers the text while preserving system back button at left
             ToolbarItem(placement: .principal) {
                 Text("All Activities")
                     .font(.headline)
@@ -49,10 +46,4 @@ struct CalendarView: View {
             calendar.date(byAdding: .month, value: $0, to: current)
         }
     }
-
-
-
-#Preview {
-//    CalendarView(activityVM: activityVM)
-}
 

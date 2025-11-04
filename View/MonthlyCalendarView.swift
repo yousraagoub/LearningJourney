@@ -3,7 +3,6 @@ import SwiftUI
 struct MonthlyCalendarView: View {
     @ObservedObject var calendarVM: CalendarViewModel
     var monthDate: Date
-    
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
     var body: some View {
         VStack {
@@ -14,7 +13,6 @@ struct MonthlyCalendarView: View {
                     .font(.system(size: 17))
                     .bold()
                 Spacer()
-                
             }
             .padding()
             
@@ -33,8 +31,6 @@ struct MonthlyCalendarView: View {
                         .clipShape(Circle())
                         .foregroundColor(day.isCurrent && day.isLogged ? Color.flameOranage : (day.isCurrent && day.isFreezed ? Color.cubeBlue : (day.isCurrent ? Color.white : (day.isLogged ? Color.flameOranage : (day.isFreezed ? Color.freezeBG : Color.white)))))
                         .bold()
-                    
-                   
                 }
                 
             }

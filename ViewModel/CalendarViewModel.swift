@@ -18,15 +18,11 @@ class CalendarViewModel: ObservableObject {
     
     var learnerM: LearnerModel
     private var calendar = Calendar.current
-    
-    // UPDATED initializer — accept a selectedMonth
-    // ✅ FIXED initializer
-    // ✅ Safe initializer — don’t call methods that depend on self
+
     init(learnerM: LearnerModel, selectedMonth: Date = Date()) {
         self.learnerM = learnerM
         generateWeekDays()
         generateMonthDays()
-        // ❌ No calls to generateWeekDays or generateMonthDays here
     }
     
     
@@ -35,7 +31,6 @@ class CalendarViewModel: ObservableObject {
         generateMonthDays()
     }
     
-    // ✅ Call this from the View or onAppear
     func setup() {
         generateWeekDays()
         generateMonthDays()
@@ -44,7 +39,6 @@ class CalendarViewModel: ObservableObject {
     // Helper to change the month and regenerate
     func setMonth(_ month: Date) {
         selectedMonth = month
-        // optionally sync currentDate too:
         selectedMonth = month
         generateMonthDays()
         generateWeekDays()

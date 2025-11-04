@@ -1,10 +1,3 @@
-//
-//  LearnerModel.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 01/05/1447 AH.
-//
-
 import Foundation
 
 struct LearnerModel: Identifiable, Codable{
@@ -18,8 +11,8 @@ struct LearnerModel: Identifiable, Codable{
     var loggedDates: [Date] = []  // days marked as learned
     var freezedDates: [Date] = [] // days marked as frozen
     var lastActionDate: Date? = nil
-    var completedGoals: [CompletedGoal] = [] // ✅ new property
-    //🧮 Computed property
+    var completedGoals: [CompletedGoal] = []
+    //Computed property
     var endDate: Date {
         let calendar = Calendar.current
         switch duration {
@@ -40,7 +33,7 @@ struct LearnerModel: Identifiable, Codable{
         var id: String { self.rawValue }
     }//enum Duration
     
-    // ✅ Only encode/decode these keys (no endDate)
+    //Only encode/decode these keys (no endDate)
     enum CodingKeys: String, CodingKey {
         case id, subject, duration, startDate, streak, freezeCount, freezeLimit, loggedDates, freezedDates, lastActionDate, completedGoals
     }

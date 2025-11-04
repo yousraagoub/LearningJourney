@@ -1,9 +1,3 @@
-//
-//  DayModel.swift
-//  LearningJourney
-//
-//  Created by Yousra Abdelrahman on 04/05/1447 AH.
-//
 import Foundation
 
 struct Day: Identifiable {

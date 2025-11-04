@@ -10,9 +10,7 @@ class OnboardingViewModel: ObservableObject {
     private let learnerKey = "learnerData"
     
     init(learnerM: LearnerModel = LearnerModel()) {
-        // Try to load saved learner first
         if let data = UserDefaults.standard.data(forKey: learnerKey),
-           //🟥
             let savedLearner = try? JSONDecoder().decode(LearnerModel.self, from: data) {
                 self.learnerM = savedLearner
                 self.createdLearner = true
@@ -40,9 +38,7 @@ class OnboardingViewModel: ObservableObject {
     
     //Save and load
     func saveLearner() {
-        //🟥
         do {
-            //🟥
             let data = try JSONEncoder().encode(learnerM)
             UserDefaults.standard.set(data, forKey: learnerKey)
         } catch {

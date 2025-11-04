@@ -8,13 +8,11 @@ struct ActivityView: View {
     @State private var showCalendar = false
     @State private var showOnboarding = false
 
-    // Custom initializer
     init(onboardingVM: OnboardingViewModel) {
         self.onboardingVM = onboardingVM
         _activityVM = StateObject(wrappedValue: ActivityViewModel(onboardingVM: onboardingVM))
         _calendarVM = StateObject(wrappedValue: CalendarViewModel(learnerM: onboardingVM.learnerM))
     }
-
 
     var body: some View {
         NavigationStack{
@@ -56,7 +54,6 @@ struct ActivityView: View {
                 .frame(width: 365, height: 254)
                 .padding(.bottom, 25)
                 if activityVM.isGoalAchieved {
-                    // 🎉 Congratulations UI
                     VStack(spacing: 20) {
                         Text("👏🏼")
                             .font(.system(size: 40))
@@ -91,7 +88,7 @@ struct ActivityView: View {
                     .padding(.top, 40)
 
                 } else {
-                    // 🟢 Normal logging/freezing UI
+                    //Normal logging/freezing UI
                     Button {
                         activityVM.logAsLearned()
                     } label: {
@@ -129,9 +126,8 @@ struct ActivityView: View {
             
             .onAppear {
                 activityVM.checkStreakResetCondition()
-                activityVM.checkGoalCompletion() // ✅ add this line
+                activityVM.checkGoalCompletion()
             }
-            // 👇 Add your navigation destinations here
             .navigationDestination(isPresented: $showCalendar) {
                 CalendarView(activityVM: activityVM)
             }
@@ -144,8 +140,3 @@ struct ActivityView: View {
     }//body
     
 }//struct
-
-//#Preview {
-//    
-//    ActivityView()
-//}

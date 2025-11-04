@@ -6,7 +6,6 @@ struct WeeklyCalendarView: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack(spacing: 10) {
-            // MARK: - Header: Month + Year with Arrow
             HStack {
                 Button {
                     withAnimation(.easeInOut) {
@@ -25,9 +24,7 @@ struct WeeklyCalendarView: View {
                     }
                 }
                 .buttonStyle(.plain)
-                
                 Spacer()
-                // Week navigation
                 HStack(spacing: 16) {
                     Button(action: { calendarVM.goToPreviousWeek() }) {
                         Image(systemName: "chevron.left")
@@ -40,7 +37,6 @@ struct WeeklyCalendarView: View {
                 }
             }
             .padding(.horizontal)
-            // MARK: - Inline Month Picker
             if calendarVM.showMonthPicker {
                 DatePicker(
                     "",
@@ -55,10 +51,9 @@ struct WeeklyCalendarView: View {
                     calendarVM.generateWeekDays()
                 }
             }
-            // MARK: - Hidden Content When Month Picker Expanded
             if !calendarVM.showMonthPicker {
                 VStack {
-                    // Weekday Titles
+                    //Name of the week days
                     HStack {
                         ForEach(calendarVM.weekDays, id: \.self) { day in
                             Text(day)
@@ -67,8 +62,7 @@ struct WeeklyCalendarView: View {
                                 .foregroundColor(.gray)
                         }
                     }
-
-                    // Week Days
+                    //Week days
                     HStack {
                         ForEach(calendarVM.daysInWeek) { day in
                             Text("\(Calendar.current.component(.day, from: day.date))")
@@ -83,12 +77,11 @@ struct WeeklyCalendarView: View {
                     }
                     Divider()
                         .padding(.bottom, 12)
-                    //Added by me
                     HStack{
                         Text("Learning \(activityVM.onboardingVM.learnerM.subject)")
                             .font(.system(size: 16))
                             .bold()
-                        Spacer() //To change the aligment of the text to be leading
+                        Spacer()
                     }
                     .padding(.bottom, 12)
                     HStack {
@@ -127,9 +120,6 @@ struct WeeklyCalendarView: View {
         }
         .animation(.easeInOut, value: calendarVM.showMonthPicker)
     }
-
-    
-    // MARK: - Helper
     private func backgroundColor(for day: Day) -> Color {
         if day.isCurrent { return (activityVM.isLogButtonDisabled ? (activityVM.didUseFreezeToday ? .freezePrimaryButton : .streakBG ) : .currentDayCalendar) }
         if day.isLogged { return .streakBG }
