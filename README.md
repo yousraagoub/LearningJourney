@@ -56,7 +56,7 @@ The app follows the MVVM (Model-View-ViewModel) pattern.
 
 **📱 Screens Overview**
 
-<img width="290" height="978" alt="Activity" src="https://github.com/user-attachments/assets/8df8d56c-aabd-44ab-bb18-c764b0da48e7" /> <img width="290" height="978" alt="IMG_0565" src="https://github.com/user-attachments/assets/1f99f6e3-b8e4-4a90-84d7-248517f50753" /> <img width="290" height="978" alt="IMG_0566" src="https://github.com/user-attachments/assets/df0377b0-ba5a-4649-ad1a-e5ff25ada247" />
+<img width="190" height="878" alt="Activity" src="https://github.com/user-attachments/assets/8df8d56c-aabd-44ab-bb18-c764b0da48e7" /> <img width="190" height="878" alt="IMG_0565" src="https://github.com/user-attachments/assets/1f99f6e3-b8e4-4a90-84d7-248517f50753" /> <img width="190" height="878" alt="IMG_0566" src="https://github.com/user-attachments/assets/df0377b0-ba5a-4649-ad1a-e5ff25ada247" />
 
 
 
