@@ -1,9 +1,7 @@
 **Learning Journey - iOS App**
 
-A simple and elegant iOS app that helps learners track their daily learning activities, build streaks, and manage rest days “freezes”.
+A simple and elegant iOS app with Apple’s new Liquid Glass design that helps learners track their daily learning activities, build streaks, and manage rest days “freezes”.
 The app includes a personalized onboarding flow, progress tracking, and streak visualization — making learning habits fun and consistent.
-
-**Note:** The app development is still in progress - to achieve full functionality.
 
 ** **
 **Table of Contents**
@@ -20,8 +18,6 @@ The app includes a personalized onboarding flow, progress tracking, and streak v
 
 - Installation
 
-- Future Improvements
-
 ** **
 **Overview**
 
@@ -29,8 +25,7 @@ Learning Journey motivates you to learn every day by providing:
 A streak-based tracker for your chosen subject.
 A freeze system that allows skipping a day without losing your streak.
 A clean, minimal SwiftUI interface.
-
-**In progress:** Persistent data storage, so your progress is saved across launches.
+Persistent data storage, so your progress is saved across launches.
 
 ** **
 **Features**
@@ -43,7 +38,7 @@ A clean, minimal SwiftUI interface.
 
 🗓️ Calendar → Integration	Visualize logged and frozen days on a calendar view.
 
-**In progress:** 💾 Persistence → User data is stored locally using UserDefaults and Codable.
+💾 Persistence → User data is stored locally using UserDefaults and Codable.
 
 ** **
 **Architecture**
@@ -61,7 +56,9 @@ The app follows the MVVM (Model-View-ViewModel) pattern.
 
 **📱 Screens Overview**
 
-<img width="290" height="978" alt="Hello Learner" src="https://github.com/user-attachments/assets/c1213395-9f15-4402-94fd-dd2ea977f97e" /> <img width="290" height="978" alt="Activity" src="https://github.com/user-attachments/assets/a5a34b42-2c98-471f-906f-4f5193e678b7" /> <img width="290" height="978" alt="1107" src="https://github.com/user-attachments/assets/a450b789-47bd-4113-b8a5-64353d244c36" /> 
+<img width="190" height="878" alt="Activity" src="https://github.com/user-attachments/assets/8df8d56c-aabd-44ab-bb18-c764b0da48e7" /> <img width="190" height="878" alt="IMG_0565" src="https://github.com/user-attachments/assets/1f99f6e3-b8e4-4a90-84d7-248517f50753" /> <img width="190" height="878" alt="IMG_0566" src="https://github.com/user-attachments/assets/df0377b0-ba5a-4649-ad1a-e5ff25ada247" />
+
+
 
 
 ** **
@@ -74,7 +71,7 @@ Framework: SwiftUI, Foundation, Combine
 
 Architecture: MVVM
 
-**In progress:** Data Storage: UserDefaults + Codable
+Data Storage: UserDefaults + Codable
 
 System Requirements: iOS 17+ / Xcode 15+
 
